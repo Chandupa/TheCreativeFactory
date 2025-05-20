@@ -1,59 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>The Creative Factory</title>
-  <link rel="icon" type="x-icon" href="favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheCreativeFactory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            color: #ffffff;
+            background-color: #000000;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        .image-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('image.jpeg'); /* Replace with your JPG path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.3; /* Change this value (0 to 1) to adjust transparency */
+        }
+
+        /* Three.js Canvas */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            cursor: none; /* Hide default cursor on canvas */
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4d9fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(77, 159, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+        }
+
+        a:hover ~ .cursor-outline,
+        button:hover ~ .cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(77, 159, 255, 0.8);
+        }
+
+        /* Video Background */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+            opacity: 0.7; /* Make video slightly transparent to show 3D elements */
+        }
+
+        .video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 12, 41, 0.7) 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #4d9fff;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .typing-container {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            max-width: 1000px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .typing-container span {
+            background: linear-gradient(90deg, #ffffff, #4d9fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(77, 159, 255, 0.3);
+        }
+
+        .cursor {
+            color: #4d9fff;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-text {
+            max-width: 800px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            line-height: 1.8;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        /* 3D Object Showcase */
+        .object-showcase {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(to bottom, #0a0f1e, #000000);
+            padding: 60px 40px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4d9fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #4d9fff, transparent);
+        }
+
+        .footer-section p, .footer-section address {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #4d9fff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(77, 159, 255, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(77, 159, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #4d9fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .typing-container {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-section {
+                margin-bottom: 30px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 12, 41, 0.95);
+                padding: 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.5s ease;
+            }
+
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 0;
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            /* Hide custom cursor on mobile */
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .typing-container {
+                font-size: 2rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+        }
+    </style>
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SH4PK8SL2E"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'G-SH4PK8SL2E');
-</script>
-
 <body>
-  <section class="showcase">
-    <header>
-      <h2 class="logo">TheCreativeFactory</h2>
-      <div class="toggle"></div>
-    </header>
-    <video src="video.mp4" muted loop autoplay></video>
-    <div class="overlay"></div>
-    <div class="text">
-      <h3>WE ONLY MAKE </h3>
-      <h2>GOOD SHIT!</h2>
-      <p>At The Creative Factory, We understand the power of storytelling and its impact on conveying messages
-        effectively.
-        Whether you're a filmmaker, content creator, business owner, or individual looking to enhance your personal
-        videos, our skilled team of video editors is dedicated to delivering exceptional results tailored to your unique
-        needs.</p>
-      <a href="#reviews">WHO ARE WE?</a>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader"></div>
     </div>
-    <ul class="social">
-      <li><a href="#"><img src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
-      <li><a href="#"><img src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
-      <li><a href="https://www.instagram.com/chandupa.weerakkody"><img src="https://i.ibb.co/ySwtH4B/instagram.png"></a>
-      </li>
-    </ul>
-  </section>
-  
-  <section class="showcase" id="reviews">
-    <video src="clouds.mp4" muted loop autoplay></video>
-    <div class="text2">
-      <h3>There's no "WE"</h3>
-     <a href="https://www.instagram.com/chandupa.weerakkody"><h2>ONLY ME, MYSELF & I</h2></a>
-      <p>One man army? I guess...</p>
 
-  </section>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Video Background
+    <div class="video-container">
+        <video autoplay muted loop playsinline id="background-video">
+            <source src="image.jpeg" type="image/jpeg">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div> -->
+
+    <div class="image-background"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">TheCreativeFactory</div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">OUR WORK</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="typing-container" id="typing-container"></div>
+        <div class="hero-text">
+            <p>At The Creative Factory, we believe in the transformative power of storytelling and innovation. We specialize in crafting compelling narratives and providing cutting-edge solutions to help you stand out.</p>
+        </div>
+        <div class="object-showcase" id="object-showcase"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TheCreativeFactory</h3>
+                <p>Film Production | Post Production | Animation. <br> Server Hosting | Web Hosting.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Our Work</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <address>
+                    <p>The Creative Factory</p>
+                    <p>Mawathgama, Homagama, Sri Lanka</p>
+                    <p style="margin-top: 10px;">chandupaweerakkody@gmail.com</p>
+                    <p>+94 71-305-7840</p>
+                </address>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TheCreativeFactory. All rights reserved. ESTD 2019.</p>
+        </div>
+    </footer>
+
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+
+        // Custom typing animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const typingContainer = document.getElementById('typing-container');
+            const phrases = [
+                'WE SEE THE UNSEEN.',
+                'WE TELL THE UNTOLD.',
+                'WE SEE THE UNSEEN, WE TELL THE UNTOLD.'
+            ];
+            
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+            let pauseEnd = 2000;
+            
+            function type() {
+                const currentPhrase = phrases[phraseIndex];
+                
+                if (isDeleting) {
+                    // Deleting text
+                    charIndex--;
+                    typingSpeed = 50;
+                } else {
+                    // Typing text
+                    charIndex++;
+                    typingSpeed = 100;
+                }
+                
+                // Current text to display
+                const displayText = currentPhrase.substring(0, charIndex);
+                
+                // Update the HTML with text and cursor
+                typingContainer.innerHTML = `<span>${displayText}</span><span class="cursor">|</span>`;
+                
+                // Handle complete typing or deletion
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    // Finished typing
+                    isDeleting = false;
+                    typingSpeed = pauseEnd; // Pause at the end
+                    
+                    // If it's the last phrase, wait longer
+                    if (phraseIndex === phrases.length - 1) {
+                        typingSpeed = 4000;
+                    }
+                    
+                    setTimeout(() => {
+                        // Only delete if not the final phrase or if we're cycling
+                        if (phraseIndex < phrases.length - 1) {
+                            isDeleting = true;
+                        } else {
+                            // Reset to first phrase
+                            phraseIndex = 0;
+                            isDeleting = true;
+                        }
+                    }, typingSpeed);
+                } else if (isDeleting && charIndex === 0) {
+                    // Finished deleting
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                }
+                
+                // Schedule the next update
+                setTimeout(type, isDeleting ? 50 : typingSpeed);
+            }
+            
+            // Start the typing animation
+            type();
+        });
+
+        // Custom cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        // Mouse position variables for Three.js interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+        
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            // Update custom cursor position
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            
+            cursorOutline.style.left = `${e.clientX}px`;
+            cursorOutline.style.top = `${e.clientY}px`;
+            
+            // Update mouse position for Three.js
+            targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        // Handle touch events for mobile
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                // Update mouse position for Three.js
+                targetMouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                targetMouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+                
+                // Prevent default behavior to avoid scrolling while interacting
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Hover effect for links and buttons
+        const handleMouseEnter = () => {
+            cursorOutline.style.width = '60px';
+            cursorOutline.style.height = '60px';
+            cursorOutline.style.borderColor = 'rgba(77, 159, 255, 0.8)';
+        };
+        
+        const handleMouseLeave = () => {
+            cursorOutline.style.width = '40px';
+            cursorOutline.style.height = '40px';
+            cursorOutline.style.borderColor = 'rgba(77, 159, 255, 0.5)';
+        };
+        
+        // Apply hover effects to all links and buttons
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', handleMouseEnter);
+            el.addEventListener('mouseleave', handleMouseLeave);
+        });
+
+        // Three.js Scene
+        let scene, camera, renderer, particles, clock, raycaster;
+        const particleCount = 2000;
+        let particleSystem;
+        
+        function initThreeJS() {
+            // Create scene
+            scene = new THREE.Scene();
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+            
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('three-canvas'),
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0);
+            
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            // Add directional light
+            const directionalLight = new THREE.DirectionalLight(0x4d9fff, 1);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            // Create raycaster for mouse interaction
+            raycaster = new THREE.Raycaster();
+            
+            // Create particles
+            createParticles();
+            
+            // Initialize clock for animation
+            clock = new THREE.Clock();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Start animation loop
+            animate();
+            
+            // Hide loading screen after everything is loaded
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('fade-out');
+            }, 1000);
+        }
+        
+        function createParticles() {
+            // Create particle geometry
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            const initialPositions = new Float32Array(particleCount * 3); // Store initial positions
+            
+            // Create particles with random positions, colors, and sizes
+            for (let i = 0; i < particleCount; i++) {
+                // Position
+                const x = (Math.random() - 0.5) * 100;
+                const y = (Math.random() - 0.5) * 100;
+                const z = (Math.random() - 0.5) * 100;
+                
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+                
+                // Store initial positions
+                initialPositions[i * 3] = x;
+                initialPositions[i * 3 + 1] = y;
+                initialPositions[i * 3 + 2] = z;
+                
+                // Color - blue gradient
+                const blueIntensity = Math.random();
+                colors[i * 3] = 0.2 * blueIntensity;  // R
+                colors[i * 3 + 1] = 0.5 * blueIntensity;  // G
+                colors[i * 3 + 2] = blueIntensity;  // B
+                
+                // Size
+                sizes[i] = Math.random() * 0.5 + 0.1;
+            }
+            
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            particleGeometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3));
+            
+            // Create particle material with custom shader
+            const particleMaterial = new THREE.ShaderMaterial({
+                vertexShader: `
+                    attribute vec3 color;
+                    attribute float size;
+                    attribute vec3 initialPosition;
+                    varying vec3 vColor;
+                    uniform float time;
+                    uniform vec2 mousePos;
+                    
+                    void main() {
+                        vColor = color;
+                        
+                        // Get the particle position
+                        vec3 pos = position;
+                        
+                        // Calculate distance to mouse in world space
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        vec3 worldPos = (modelMatrix * vec4(pos, 1.0)).xyz;
+                        
+                        // Mouse influence
+                        float mouseStrength = 10.0;
+                        float distToMouse = length(worldPos.xy - mousePos * 50.0);
+                        float influence = mouseStrength / (1.0 + 0.1 * distToMouse);
+                        
+                        // Apply mouse repulsion/attraction
+                        if (distToMouse < 20.0) {
+                            vec2 direction = normalize(worldPos.xy - mousePos * 50.0);
+                            pos.x += direction.x * influence * (sin(time) * 0.5 + 0.5);
+                            pos.y += direction.y * influence * (cos(time) * 0.5 + 0.5);
+                        }
+                        
+                        // Return to initial position
+                        float returnForce = 0.02;
+                        pos.x += (initialPosition.x - pos.x) * returnForce;
+                        pos.y += (initialPosition.y - pos.y) * returnForce;
+                        pos.z += (initialPosition.z - pos.z) * returnForce;
+                        
+                        // Wave motion
+                        pos.x += sin(time * 0.5 + pos.y * 0.1) * 0.2;
+                        pos.y += cos(time * 0.5 + pos.x * 0.1) * 0.2;
+                        
+                        // Update position
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                        
+                        // Size attenuation
+                        gl_PointSize = size * (300.0 / -mvPosition.z);
+                        
+                        // Make particles closer to mouse larger
+                        if (distToMouse < 20.0) {
+                            gl_PointSize *= 1.0 + (1.0 - distToMouse / 20.0) * 2.0;
+                        }
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+                    
+                    void main() {
+                        // Create a circular particle
+                        float r = distance(gl_PointCoord, vec2(0.5, 0.5));
+                        if (r > 0.5) discard;
+                        
+                        // Smooth edges
+                        float alpha = 1.0 - smoothstep(0.4, 0.5, r);
+                        
+                        // Apply color with glow effect
+                        gl_FragColor = vec4(vColor, alpha);
+                    }
+                `,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                uniforms: {
+                    time: { value: 0.0 },
+                    mousePos: { value: new THREE.Vector2(0, 0) }
+                }
+            });
+            
+            // Create particle system
+            particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particleSystem);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Smooth mouse movement
+            mouseX += (targetMouseX - mouseX) * 0.1;
+            mouseY += (targetMouseY - mouseY) * 0.1;
+            
+            // Update uniforms for shader
+            if (particleSystem && particleSystem.material.uniforms) {
+                particleSystem.material.uniforms.time.value = clock.getElapsedTime();
+                particleSystem.material.uniforms.mousePos.value.set(mouseX, mouseY);
+            }
+            
+            // Rotate particle system slowly
+            if (particleSystem) {
+                particleSystem.rotation.y += 0.001;
+                particleSystem.rotation.x += 0.0005;
+            }
+            
+            // Render scene
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Initialize Three.js when the page is loaded
+        window.addEventListener('load', initThreeJS);
+
+        // Placeholder for video error handling
+        document.getElementById('background-video').addEventListener('error', function() {
+            document.querySelector('.video-container').style.backgroundColor = '#0a0f1e';
+        });
+    </script>
 </body>
-</div>
-
 </html>
