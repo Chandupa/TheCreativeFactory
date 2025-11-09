@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chandupa Weerakkody — CEO & Lead Designer</title>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons (browser) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <!-- Fonts (optional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --background: oklch(0.145 0 0);
+      --foreground: oklch(0.985 0 0);
+      --border: oklch(0.269 0 0);
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      background: #000; /* base to blend with canvas */
+      color: #fff;
+      overflow-x: hidden;
+      cursor: none; /* hide default cursor to show custom one */
+    }
+    a, button, .interactive { cursor: none; }
+
+    /* Background image layer (optional—replace image.jpeg or remove div) */
+    .image-background{
+      position: fixed; inset: 0;
+      background-image: url('ceo_image.jpg'); /* set your path */
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      opacity: .25;
+      z-index: -1;
+    }
+
+    /* Three.js canvas behind everything */
+    #three-canvas{
+      position: fixed; inset:0;
+      width:100%; height:100vh;
+      z-index: -2;
+      pointer-events: none; /* don't block clicks */
+    }
+
+    /* Simple “animate-in” helpers matching your previous JSX */
+    .animate-in { opacity: 0; transform: translateY(8px); animation: fadeSlideIn .9s ease forwards; }
+    .fade-in { }
+    .slide-in-from-left-8 { transform: translateX(-2rem); }
+    .slide-in-from-right-8 { transform: translateX(2rem); }
+    .slide-in-from-bottom-8 { transform: translateY(2rem); }
+
+    @keyframes fadeSlideIn { to { opacity: 1; transform: translateX(0) translateY(0); } }
+
+    /* Extra effects */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    @keyframes glow-pulse { 0%,100%{ box-shadow:0 0 20px rgba(59,130,246,.3)} 50%{ box-shadow:0 0 40px rgba(59,130,246,.5)} }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+
+    /* Custom cursor */
+    .custom-cursor { pointer-events:none; }
+    #cursorDot{
+      position:fixed; width:12px; height:12px; background:#60a5fa; border-radius:9999px;
+      transform:translate(-50%,-50%); left:-100px; top:-100px; z-index:60; transition:opacity .2s;
+    }
+    #cursorOutline{
+      position:fixed; width:40px; height:40px; border:2px solid rgba(59,130,246,.5); border-radius:9999px;
+      transform:translate(-50%,-50%); left:-100px; top:-100px; z-index:59; transition:all .25s;
+    }
+    @media (pointer: coarse){
+      body { cursor:auto; }
+      .custom-cursor{ display:none !important; }
+    }
+  </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SH4PK8SL2E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SH4PK8SL2E');
+</script>
+<body class="min-h-screen bg-gradient-to-b from-slate-950/80 via-blue-950/80 to-slate-950/80 overflow-x-hidden">
+
+  <!-- Interactive circles (Three.js) -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- Optional image overlay (keep or remove) -->
+  <div class="image-background"></div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor fixed top-0 left-0 w-full h-full">
+    <div id="cursorDot"></div>
+    <div id="cursorOutline"></div>
+  </div>
+
+  <!-- Soft animated blobs you had before (kept) -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply blur-3xl opacity-10 animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply blur-3xl opacity-10 animate-pulse"
+         style="animation-delay: 2s;"></div>
+  </div>
+
+  <!-- MAIN CONTENT (unchanged) -->
+  <main class="relative max-w-7xl mx-auto px-6 py-16 md:py-24 z-10">
+    <!-- Hero -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center mb-20 lg:mb-32">
+      <!-- Photo -->
+      <div class="flex justify-center md:justify-start animate-in fade-in slide-in-from-left-8">
+        <div class="relative group">
+          <!-- Glow -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-blue-600 rounded-2xl blur-3xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
+          <div class="absolute inset-0 bg-gradient-to-tr from-blue-300 to-transparent rounded-2xl blur-2xl opacity-20 group-hover:opacity-40 transition-all duration-500"></div>
+          <!-- Image -->
+          <div class="relative w-80 h-80 md:w-96 md:h-96 rounded-2xl overflow-hidden border-2 border-blue-400/50 group-hover:border-blue-400 transition-all duration-500 shadow-2xl">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-transparent z-10 group-hover:from-blue-300/10 transition-all duration-500"></div>
+            <img src="/chandupa.png" alt="Chandupa Weerakkody CEO"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="flex flex-col justify-center space-y-8 animate-in fade-in slide-in-from-right-8">
+        <div>
+          <h1 class="text-6xl md:text-7xl font-bold mb-4 leading-tight">
+            <span class="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 bg-clip-text text-transparent animate-pulse">
+              Chandupa
+            </span><br />
+            <span class="bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
+              Weerakkody
+            </span>
+          </h1>
+          <p class="text-xl md:text-2xl text-blue-300 font-semibold mt-2 flex items-center gap-2">
+            CEO &amp; Lead Designer
+            <span class="inline-block w-1 h-1 bg-blue-400 rounded-full animate-pulse"></span>
+          </p>
+          <div class="h-1 w-24 bg-gradient-to-r from-blue-400 to-purple-500 mt-6 rounded-full"></div>
+        </div>
+
+        <!-- Philosophy -->
+        <div class="space-y-4 bg-gradient-to-br from-blue-900/30 to-purple-900/20 p-6 rounded-xl border border-blue-400/20 backdrop-blur-sm hover:border-blue-400/50 transition-all duration-500">
+          <p class="text-lg md:text-xl text-blue-100 leading-relaxed font-semibold italic">
+            "See the unseen, tell the untold"
+          </p>
+          <p class="text-sm text-blue-300/70">A guiding philosophy for creative excellence</p>
+        </div>
+
+        <!-- Socials -->
+        <div class="flex gap-4 pt-4">
+          <a href="https://www.linkedin.com/in/chandupa-weerakkody" target="_blank" rel="noopener noreferrer" title="LinkedIn"
+             class="interactive p-3 rounded-lg bg-gradient-to-br from-blue-900/40 to-purple-900/20 border border-blue-400/30 text-blue-300 hover:text-white hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:scale-110 backdrop-blur-sm group">
+            <i data-lucide="linkedin" class="w-6 h-6 group-hover:text-blue-200"></i>
+          </a>
+          <a href="https://www.instagram.com/chandupa.mp4" target="_blank" rel="noopener noreferrer" title="Instagram"
+             class="interactive p-3 rounded-lg bg-gradient-to-br from-blue-900/40 to-purple-900/20 border border-blue-400/30 text-blue-300 hover:text-white hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:scale-110 backdrop-blur-sm group">
+            <i data-lucide="instagram" class="w-6 h-6 group-hover:text-blue-200"></i>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61556727893743" target="_blank" rel="noopener noreferrer" title="Facebook"
+             class="interactive p-3 rounded-lg bg-gradient-to-br from-blue-900/40 to-purple-900/20 border border-blue-400/30 text-blue-300 hover:text-white hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:scale-110 backdrop-blur-sm group">
+            <i data-lucide="facebook" class="w-6 h-6 group-hover:text-blue-200"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" title="Twitter"
+             class="interactive p-3 rounded-lg bg-gradient-to-br from-blue-900/40 to-purple-900/20 border border-blue-400/30 text-blue-300 hover:text-white hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:scale-110 backdrop-blur-sm group">
+            <i data-lucide="twitter" class="w-6 h-6 group-hover:text-blue-200"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="bg-gradient-to-br from-blue-950/50 to-purple-950/30 rounded-2xl p-8 md:p-12 border border-blue-400/20 mb-16 backdrop-blur-sm hover:border-blue-400/40 transition-all duration-500 animate-in fade-in slide-in-from-bottom-8"
+         style="animation-delay: 200ms;">
+      <h2 class="text-4xl md:text-5xl font-bold mb-8 flex items-center gap-3">
+        <span class="bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">About</span>
+        <span class="h-1 w-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></span>
+      </h2>
+      <div class="text-base md:text-lg text-blue-100 leading-relaxed space-y-4">
+        <p>
+          Chandupa Weerakkody is the Founder, CEO, and Lead Designer of The Creative Factory, a Colombo-based
+          creative agency known for its innovative and impactful designs. Starting his creative journey at age 12,
+          Chandupa combines artistic vision with strategic leadership to drive brand growth and originality.
+        </p>
+        <p class="text-blue-200 font-semibold">
+          Guided by his philosophy, "See the unseen, tell the untold," he continues to shape The Creative Factory
+          into a leader in modern creative solutions.
+        </p>
+      </div>
+    </div>
+
+    <!-- Contact Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-8"
+         style="animation-delay: 400ms;">
+      <!-- Get in touch -->
+      <div class="bg-gradient-to-br from-blue-950/50 to-purple-950/30 rounded-2xl p-8 border border-blue-400/20 backdrop-blur-sm hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-500 group">
+        <h3 class="text-3xl font-bold mb-8 flex items-center gap-3">
+          <span class="bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">Get In Touch</span>
+          <i data-lucide="arrow-right" class="w-6 h-6 text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+        </h3>
+
+        <div class="space-y-6">
+          <!-- Phone -->
+          <a href="tel:+94713057840"
+             class="flex items-center gap-4 p-4 rounded-lg bg-blue-900/20 border border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-900/30 transition-all duration-300 interactive group/item">
+            <div class="p-3 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/20 border border-blue-400/30">
+              <i data-lucide="phone" class="w-5 h-5 text-blue-300 group-hover/item:text-blue-200"></i>
+            </div>
+            <div>
+              <p class="text-blue-300/70 text-sm font-medium">Phone</p>
+              <p class="text-white font-semibold">+94 713 057 840</p>
+            </div>
+          </a>
+
+          <!-- WhatsApp -->
+          <a href="https://wa.me/qr/KTKPT3IISTQ2C1" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-4 p-4 rounded-lg bg-blue-900/20 border border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-900/30 transition-all duration-300 interactive group/item">
+            <div class="p-3 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/20 border border-blue-400/30">
+              <i data-lucide="message-circle" class="w-5 h-5 text-blue-300 group-hover/item:text-blue-200"></i>
+            </div>
+            <div>
+              <p class="text-blue-300/70 text-sm font-medium">WhatsApp</p>
+              <p class="text-white font-semibold">Message on WhatsApp</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="bg-gradient-to-br from-blue-950/50 to-purple-950/30 rounded-2xl p-8 border border-blue-400/20 backdrop-blur-sm hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-500 group">
+        <h3 class="text-3xl font-bold mb-8 flex items-center gap-3">
+          <span class="bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">Email</span>
+          <i data-lucide="arrow-right" class="w-6 h-6 text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+        </h3>
+
+        <div class="space-y-6">
+          <!-- Personal -->
+          <a href="mailto:chandupaweerakkody@gmail.com"
+             class="flex items-center gap-4 p-4 rounded-lg bg-blue-900/20 border border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-900/30 transition-all duration-300 interactive group/item">
+            <div class="p-3 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/20 border border-blue-400/30">
+              <i data-lucide="mail" class="w-5 h-5 text-blue-300 group-hover/item:text-blue-200"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-blue-300/70 text-sm font-medium">Personal</p>
+              <p class="text-white font-semibold break-all text-sm">chandupaweerakkody@gmail.com</p>
+            </div>
+          </a>
+
+          <!-- Business -->
+          <a href="mailto:chandupa@thecreativefactory.lk"
+             class="flex items-center gap-4 p-4 rounded-lg bg-blue-900/20 border border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-900/30 transition-all duration-300 interactive group/item">
+            <div class="p-3 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/20 border border-blue-400/30">
+              <i data-lucide="mail" class="w-5 h-5 text-blue-300 group-hover/item:text-blue-200"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-blue-300/70 text-sm font-medium">Business</p>
+              <p class="text-white font-semibold break-all text-sm">chandupa@thecreativefactory.lk</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Three.js (for interactive circles) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+    // Initialize Lucide icons
+    window.lucide && window.lucide.createIcons();
+
+    // ===== Custom cursor =====
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorOutline = document.getElementById('cursorOutline');
+
+    document.addEventListener('mousemove', (e) => {
+      const { clientX: x, clientY: y } = e;
+      cursorDot.style.left = x + 'px';
+      cursorDot.style.top = y + 'px';
+      cursorOutline.style.left = x + 'px';
+      cursorOutline.style.top = y + 'px';
+    });
+
+    const handleEnter = () => {
+      cursorOutline.style.width = '60px';
+      cursorOutline.style.height = '60px';
+      cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.8)';
+      cursorOutline.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
+    };
+    const handleLeave = () => {
+      cursorOutline.style.width = '40px';
+      cursorOutline.style.height = '40px';
+      cursorOutline.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+      cursorOutline.style.boxShadow = 'none';
+    };
+    const bindInteractiveHover = () => {
+      document.querySelectorAll('a, button, .interactive').forEach((el) => {
+        el.addEventListener('mouseenter', handleEnter);
+        el.addEventListener('mouseleave', handleLeave);
+      });
+    };
+    bindInteractiveHover();
+
+    // Optional: reveal-on-scroll for .animate-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('!opacity-100', '!translate-x-0', '!translate-y-0');
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.animate-in').forEach((el) => observer.observe(el));
+
+    // ===== Three.js Interactive Particles (circles) =====
+    let scene, camera, renderer, particleSystem, clock;
+    const particleCount = 2000;
+
+    // mouse normalized -1..1
+    let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
+
+    function initThree(){
+      const canvas = document.getElementById('three-canvas');
+
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+      camera.position.z = 30;
+
+      renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      // Lights (subtle)
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      const dir = new THREE.DirectionalLight(0x4d9fff, 0.6);
+      dir.position.set(1,1,1);
+      scene.add(dir);
+
+      clock = new THREE.Clock();
+
+      createParticles();
+
+      window.addEventListener('resize', onResize);
+      window.addEventListener('mousemove', (e)=>{
+        targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      }, { passive:true });
+
+      // Touch support for mobile (no custom cursor shown)
+      window.addEventListener('touchmove', (e)=>{
+        if(e.touches.length){
+          targetMouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+          targetMouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+        }
+      }, { passive:true });
+
+      animate();
+    }
+
+    function createParticles(){
+      const geom = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      const sizes = new Float32Array(particleCount);
+      const initial = new Float32Array(particleCount * 3);
+
+      for(let i=0;i<particleCount;i++){
+        const x = (Math.random() - 0.5) * 100;
+        const y = (Math.random() - 0.5) * 100;
+        const z = (Math.random() - 0.5) * 100;
+
+        positions[i*3] = x;
+        positions[i*3+1] = y;
+        positions[i*3+2] = z;
+
+        initial[i*3] = x;
+        initial[i*3+1] = y;
+        initial[i*3+2] = z;
+
+        const b = Math.random(); // blue intensity
+        colors[i*3] = 0.2*b;     // R
+        colors[i*3+1] = 0.5*b;   // G
+        colors[i*3+2] = 1.0*b;   // B
+
+        sizes[i] = Math.random() * 0.5 + 0.15;
+      }
+
+      geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geom.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+      geom.setAttribute('initialPosition', new THREE.BufferAttribute(initial, 3));
+
+      const material = new THREE.ShaderMaterial({
+        vertexShader: `
+          attribute vec3 color;
+          attribute float size;
+          attribute vec3 initialPosition;
+          varying vec3 vColor;
+          uniform float time;
+          uniform vec2 mousePos;
+
+          void main(){
+            vColor = color;
+            vec3 pos = position;
+
+            // distance to mouse (in "world-ish" XY units)
+            vec3 worldPos = (modelMatrix * vec4(pos,1.0)).xyz;
+            float distToMouse = length(worldPos.xy - mousePos * 50.0);
+
+            // mild repulsion near mouse
+            if(distToMouse < 20.0){
+              vec2 dir = normalize(worldPos.xy - mousePos * 50.0);
+              pos.x += dir.x * (10.0 / (1.0 + 0.1 * distToMouse)) * (sin(time)*0.5 + 0.5);
+              pos.y += dir.y * (10.0 / (1.0 + 0.1 * distToMouse)) * (cos(time)*0.5 + 0.5);
+            }
+
+            // drift back to initial position
+            float returnForce = 0.02;
+            pos += (initialPosition - pos) * returnForce;
+
+            // gentle wave
+            pos.x += sin(time*0.5 + pos.y*0.1) * 0.2;
+            pos.y += cos(time*0.5 + pos.x*0.1) * 0.2;
+
+            vec4 mvPosition = modelViewMatrix * vec4(pos,1.0);
+            gl_Position = projectionMatrix * mvPosition;
+
+            // size attenuation
+            gl_PointSize = size * (300.0 / -mvPosition.z);
+
+            if(distToMouse < 20.0){
+              gl_PointSize *= 1.0 + (1.0 - distToMouse/20.0) * 2.0;
+            }
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vColor;
+          void main(){
+            float r = distance(gl_PointCoord, vec2(0.5));
+            if(r > 0.5) discard;
+            float alpha = 1.0 - smoothstep(0.4, 0.5, r);
+            gl_FragColor = vec4(vColor, alpha);
+          }
+        `,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        uniforms: {
+          time: { value: 0.0 },
+          mousePos: { value: new THREE.Vector2(0,0) }
+        }
+      });
+
+      particleSystem = new THREE.Points(geom, material);
+      scene.add(particleSystem);
+    }
+
+    function animate(){
+      requestAnimationFrame(animate);
+
+      // smooth mouse
+      mouseX += (targetMouseX - mouseX) * 0.1;
+      mouseY += (targetMouseY - mouseY) * 0.1;
+
+      if(particleSystem){
+        const t = clock.getElapsedTime();
+        particleSystem.material.uniforms.time.value = t;
+        particleSystem.material.uniforms.mousePos.value.set(mouseX, mouseY);
+
+        // subtle rotation
+        particleSystem.rotation.y += 0.001;
+        particleSystem.rotation.x += 0.0005;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function onResize(){
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener('load', initThree);
+  </script>
+</body>
+</html>
