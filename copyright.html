@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copyright Notice - TheCreativeFactory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            color: #ffffff;
+            background-color: #000000;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        .image-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('image.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            cursor: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4d9fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(77, 159, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+        }
+
+        a:hover ~ .cursor-outline,
+        button:hover ~ .cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(77, 159, 255, 0.8);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: -1px;
+            color: #000000;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #4d9fff;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #000000;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .copyright-container {
+            min-height: calc(100vh - 80px);
+            margin-top: 80px;
+            padding: 80px 40px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .copyright-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .copyright-header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffffff, #4d9fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(77, 159, 255, 0.3);
+        }
+
+        .copyright-header p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+
+        .copyright-notice {
+            background: linear-gradient(135deg, rgba(77, 159, 255, 0.05) 0%, rgba(77, 159, 255, 0.02) 100%);
+            border: 2px solid rgba(77, 159, 255, 0.3);
+            border-radius: 15px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            transition: all 0.4s ease;
+        }
+
+        .copyright-notice:hover {
+            border-color: rgba(77, 159, 255, 0.6);
+            background: linear-gradient(135deg, rgba(77, 159, 255, 0.1) 0%, rgba(77, 159, 255, 0.05) 100%);
+            box-shadow: 0 20px 60px rgba(77, 159, 255, 0.15);
+        }
+
+        .copyright-notice h2 {
+            font-size: 1.8rem;
+            color: #4d9fff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .copyright-notice h2::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 30px;
+            background: linear-gradient(180deg, #4d9fff, transparent);
+            border-radius: 2px;
+        }
+
+        .copyright-notice p {
+            font-size: 1.1rem;
+            color: #d0d0d0;
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+
+        .copyright-notice p:last-child {
+            margin-bottom: 0;
+        }
+
+        .notice-section {
+            background: rgba(77, 159, 255, 0.08);
+            border-left: 4px solid #4d9fff;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .notice-section h3 {
+            color: #4d9fff;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notice-section p {
+            color: #b0b0b0;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .copyright-highlight {
+            color: #4d9fff;
+            font-weight: bold;
+        }
+
+        .legal-text {
+            font-style: italic;
+            color: #888;
+            font-size: 0.95rem;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(77, 159, 255, 0.2);
+        }
+
+        footer {
+            background: linear-gradient(to bottom, #0a0f1e, #000000);
+            padding: 60px 40px 30px;
+            position: relative;
+            z-index: 10;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4d9fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #4d9fff, transparent);
+        }
+
+        .footer-section p, .footer-section address {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #4d9fff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(77, 159, 255, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(77, 159, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #4d9fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .copyright-container {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .copyright-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .copyright-header p {
+                font-size: 1rem;
+            }
+
+            .copyright-notice {
+                padding: 30px 20px;
+            }
+
+            .copyright-notice h2 {
+                font-size: 1.4rem;
+            }
+
+            .copyright-notice p {
+                font-size: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-section {
+                margin-bottom: 30px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.5s ease;
+            }
+
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            nav ul li {
+                margin: 0;
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+
+            .copyright-container {
+                padding: 40px 20px;
+                margin-top: 70px;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .copyright-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .copyright-notice h2 {
+                font-size: 1.2rem;
+            }
+
+            .notice-section {
+                padding: 20px;
+            }
+
+            .copyright-notice {
+                padding: 20px;
+            }
+
+            footer {
+                padding: 30px 15px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <div class="image-background"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">TheCreativeFactory</div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="#our-work">OUR WORK</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#contact">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="copyright-container">
+        <div class="copyright-header">
+            <h1>Copyright Notice</h1>
+        </div>
+
+        <div class="copyright-notice">
+            <h2><i class="fas fa-shield-alt"></i> Intellectual Property Rights</h2>
+            <p>All content contained in this project file, including but not limited to compositions, animations, designs, assets, source files, scripts, expressions, visual elements, and any associated materials, is the <span class="copyright-highlight">exclusive intellectual property of CHANDUPA SANHITHA WEERAKKODY</span>, operating under <span class="copyright-highlight">TheCreativeFactory</span>.</p>
+
+            <div class="notice-section">
+                <h3><i class="fas fa-lock"></i> Legal Protection</h3>
+                <p>This material is protected under applicable copyright and intellectual property laws in accordance with international treaties and domestic legislation. All rights are reserved and enforced to the fullest extent permitted by law.</p>
+            </div>
+
+            <p>No part of this project may be copied, reproduced, modified, reverse engineered, distributed, transmitted, displayed, sold, licensed, or used in any form or by any means without <span class="copyright-highlight">prior written permission</span> from CHANDUPA SANHITHA WEERAKKODY.</p>
+
+            <div class="notice-section">
+                <h3><i class="fas fa-exclamation-triangle"></i> Unauthorized Use</h3>
+                <p>Unauthorized use, duplication, or distribution of this material will result in <span class="copyright-highlight">legal action</span>. This includes but is not limited to civil litigation, injunctive relief, and recovery of damages as permitted under applicable law.</p>
+            </div>
+
+            <div class="notice-section">
+                <h3><i class="fas fa-copyright"></i> All Rights Reserved</h3>
+                <p>© 2026 CHANDUPA SANHITHA WEERAKKODY. All Rights Reserved. TheCreativeFactory® is a registered company of Democratic Socialist Republic of Sri Lanka 🇱🇰.</p>
+            </div>
+
+            <p class="legal-text"><strong>For inquiries regarding licensing, permissions, or usage rights, please contact us directly through our official channels.</strong></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TheCreativeFactory</h3>
+                <p>Film Production | Post Production | Animation. <br> Server Hosting | Web Hosting.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">Our Work</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <address>
+                    <p>The Creative Factory</p>
+                    <p>Mawathgama, Homagama, Sri Lanka</p>
+                    <p style="margin-top: 10px;">chandupaweerakkody@gmail.com</p>
+                    <p>+94 71-305-7840</p>
+                </address>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <script>document.write(new Date().getFullYear());</script> TheCreativeFactory. All rights reserved. ESTD 2019.</p>
+        </div>
+    </footer>
+
+    <!-- Project Config JSON (embedded) -->
+    <script type="application/json" id="project-config">
+    {
+        "name": "thecreativefactory-copyright",
+        "version": "1.0.0",
+        "private": true,
+        "copyright": {
+            "owner": "CHANDUPA SANHITHA WEERAKKODY",
+            "business": "TheCreativeFactory",
+            "year": 2026,
+            "country": "Sri Lanka",
+            "domain": "thecreativefactory.lk",
+            "rights": "All Rights Reserved"
+        }
+    }
+    </script>
+
+    <!-- JavaScript (embedded) -->
+    <script>
+        // Loading screen fade out
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                setTimeout(() => {
+                    loadingScreen.classList.add('fade-out');
+                }, 500);
+            }
+        });
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            cursorOutline.style.left = e.clientX + 'px';
+            cursorOutline.style.top = e.clientY + 'px';
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+
+            const navLinks = mainNav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mainNav.classList.remove('active');
+                });
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
