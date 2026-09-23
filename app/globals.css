@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+@import "../styles/site.css";
+@import "../styles/about.css";
+
+/* Legacy HTML is kept for reference only — don't generate utilities from it. */
+@source not "../legacy";
+@source not "../.archive";
+
+/* ---------- Shared base ---------- */
+
+body {
+  color: #ffffff;
+  background-color: #000000;
+  overflow-x: hidden;
+}
+
+/* Three.js canvas created by <ParticleBackground>, behind everything. */
+.three-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -2;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Custom cursor is pointless (and invisible) on touch devices. */
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}

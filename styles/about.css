@@ -1,0 +1,107 @@
+/*
+ * About page styles, ported from the legacy about.html <style> block. The
+ * page's layout itself is Tailwind utilities (it was built with the Tailwind
+ * CDN); only the non-utility bits live here, scoped to `.about-root`.
+ */
+
+/* Legacy <body> classes: min-h-screen bg-gradient-to-b from-slate-950/80 via-blue-950/80 to-slate-950/80
+   (Tailwind v3 palette values, over a black base). */
+body:has(.about-root) {
+  min-height: 100vh;
+  cursor: none;
+  background-color: #000;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 0.8),
+    rgba(23, 37, 84, 0.8),
+    rgba(2, 6, 23, 0.8)
+  );
+}
+
+.about-root a,
+.about-root button,
+.about-root .interactive {
+  cursor: none;
+}
+
+.about-image-background {
+  position: fixed;
+  inset: 0;
+  opacity: 0.25;
+  z-index: -1;
+}
+
+/* "animate-in" helpers from the legacy page */
+.about-root .animate-in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: aboutFadeSlideIn 0.9s ease forwards;
+}
+
+.about-root .slide-in-from-left-8 {
+  transform: translateX(-2rem);
+}
+
+.about-root .slide-in-from-right-8 {
+  transform: translateX(2rem);
+}
+
+.about-root .slide-in-from-bottom-8 {
+  transform: translateY(2rem);
+}
+
+@keyframes aboutFadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* Custom cursor (About variant) */
+.custom-cursor--about .cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: #60a5fa;
+  border-radius: 9999px;
+  transform: translate(-100px, -100px);
+  z-index: 60;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+/* Legacy used `transition: all .25s`, which includes position — the outline trails the dot. */
+.custom-cursor--about .cursor-outline {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  border-radius: 9999px;
+  transform: translate(-100px, -100px);
+  z-index: 59;
+  pointer-events: none;
+  transition:
+    transform 0.25s,
+    width 0.25s,
+    height 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+@media (pointer: coarse) {
+  body:has(.about-root) {
+    cursor: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-root .animate-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

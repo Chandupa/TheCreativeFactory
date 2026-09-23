@@ -1,0 +1,987 @@
+/*
+ * Main site styles (home, copyright, contact, work, services), ported from the
+ * legacy index.html / copyright.html <style> blocks.
+ *
+ * Everything is scoped under `.site` (the MainLayout wrapper) so these rules
+ * cannot leak into the About page, which has its own look. `:where()` keeps the
+ * reset at zero specificity, exactly like the legacy `* { … }` rule.
+ */
+
+/* ---------- Reset (legacy `*` rule) + undo Tailwind preflight differences ---------- */
+
+:where(.site, .site *) {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* Legacy pages had no line-height on body (UA "normal"); preflight sets 1.5. */
+:where(.site) {
+  line-height: normal;
+}
+
+/* Legacy relied on UA bold headings and inline images; preflight resets both. */
+:where(.site) :where(h1, h2, h3, h4, h5, h6) {
+  font-weight: bold;
+}
+
+:where(.site) :where(img) {
+  display: inline;
+}
+
+body:has(.site) {
+  cursor: default;
+}
+
+/* ---------- Backgrounds ---------- */
+
+.site .image-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* ---------- Custom cursor ---------- */
+
+.custom-cursor--site .cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4d9fff;
+  border-radius: 50%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-100px, -100px);
+}
+
+.custom-cursor--site .cursor-outline {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(77, 159, 255, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-100px, -100px);
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.site-header .logo {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  color: #000000;
+  text-decoration: none;
+}
+
+.site-header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.site-header nav ul li {
+  margin-left: 30px;
+}
+
+.site-header nav ul li a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.site-header nav ul li a:hover {
+  color: #4d9fff;
+}
+
+.site-header .mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #000000;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  margin-top: 80px;
+}
+
+.typing-container {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  max-width: 1000px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.typing-container span {
+  background: linear-gradient(90deg, #ffffff, #4d9fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(77, 159, 255, 0.3);
+}
+
+.typing-container .cursor {
+  color: #4d9fff;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-text {
+  max-width: 800px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  line-height: 1.8;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-text p {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+.object-showcase {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* ---------- Services ("WHAT WE DO") ---------- */
+
+.services-section {
+  background: linear-gradient(135deg, #0a1a3a 0%, #0f2a4a 50%, #051420 100%);
+  padding: 120px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.services-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 80px;
+  text-shadow: 0 4px 20px rgba(77, 159, 255, 0.2);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.service-card {
+  background: rgba(77, 159, 255, 0.05);
+  border: 2px solid rgba(77, 159, 255, 0.2);
+  border-radius: 15px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(77, 159, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.service-card:hover::before {
+  left: 100%;
+}
+
+.service-card:hover {
+  background: rgba(77, 159, 255, 0.15);
+  border-color: rgba(77, 159, 255, 0.6);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(77, 159, 255, 0.2);
+}
+
+.service-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  background: linear-gradient(135deg, #4d9fff, #2d6fbb);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.15) rotateZ(10deg);
+  box-shadow: 0 15px 40px rgba(77, 159, 255, 0.4);
+}
+
+.service-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.service-card:hover .service-name {
+  color: #4d9fff;
+}
+
+.service-description {
+  font-size: 1rem;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+.services-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+/* ---------- CTA ("READY TO BUILD YOUR BRAND?") — was inline styles ---------- */
+
+.new-sound {
+  background: linear-gradient(135deg, #0d1532 0%, #142d55 50%, #0f1f3c 100%);
+  padding: 100px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.new-sound-circle {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.new-sound-circle--a {
+  top: -50%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(77, 159, 255, 0.15) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+.new-sound-circle--b {
+  bottom: -30%;
+  right: -5%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(77, 159, 255, 0.1) 0%, transparent 70%);
+  animation: float 8s ease-in-out infinite 2s;
+}
+
+.new-sound-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.new-sound h2 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  word-spacing: 0.1em;
+  line-height: 1.3;
+  margin-bottom: 40px;
+  text-shadow: 0 4px 20px rgba(77, 159, 255, 0.2);
+}
+
+.new-sound h2 span {
+  color: #4d9fff;
+}
+
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #4d9fff, #2d6fbb);
+  color: white;
+  padding: 16px 50px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 2px solid #4d9fff;
+  cursor: pointer;
+}
+
+.cta-button:hover,
+.cta-button:focus-visible {
+  background: linear-gradient(135deg, #2d6fbb, #1a4d7a);
+  box-shadow: 0 0 30px rgba(77, 159, 255, 0.4);
+}
+
+/* ---------- Clients carousel — was inline styles ---------- */
+
+.clients-section {
+  background: linear-gradient(to bottom, #0a0f1e, #05080f);
+  padding: 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.clients-inner {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.clients-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 60px;
+  text-shadow: 0 2px 10px rgba(77, 159, 255, 0.2);
+}
+
+.logo-carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+/*
+ * The legacy keyframes used hard-coded distances (-2480px / -1680px / -1280px)
+ * that didn't match the track width, so the logos ran off into empty space
+ * and jumped. The track is now exactly two copies (trailing padding = gap),
+ * so -50% is always one seamless loop.
+ */
+.logo-carousel {
+  display: flex;
+  gap: 60px;
+  padding-right: 60px;
+  animation: scroll-logos 48s linear infinite;
+  width: fit-content;
+}
+
+@keyframes scroll-logos {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Fixed-width tiles so every logo gets the same space (legacy min-width: 120px
+   was sized for the missing placeholder images). */
+.logo-item {
+  flex: 0 0 240px;
+  width: 240px;
+  min-width: 120px;
+  padding: 0 20px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(77, 159, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(77, 159, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.logo-item:hover {
+  background: rgba(77, 159, 255, 0.2);
+  border-color: rgba(77, 159, 255, 0.4);
+  transform: translateY(-5px);
+}
+
+.logo-item img {
+  width: 100%;
+  max-width: 100%;
+  max-height: 120px;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0.9);
+  transition: filter 0.3s ease;
+}
+
+.logo-item:hover img {
+  filter: brightness(1.1);
+}
+
+.logo-placeholder {
+  padding: 0 12px;
+  white-space: nowrap;
+  color: #ffffff;
+}
+
+.logo-carousel-fade {
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.logo-carousel-fade--left {
+  left: 0;
+  background: linear-gradient(to right, #05080f, transparent);
+}
+
+.logo-carousel-fade--right {
+  right: 0;
+  background: linear-gradient(to left, #05080f, transparent);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  background: linear-gradient(to bottom, #0a0f1e, #000000);
+  padding: 60px 40px 30px;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #4d9fff;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-section h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #4d9fff, transparent);
+}
+
+.footer-section p,
+.footer-section address {
+  color: #b0b0b0;
+  line-height: 1.6;
+  font-style: normal;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #4d9fff;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(77, 159, 255, 0.2);
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ---------- Loading screen ---------- */
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 1s ease;
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(77, 159, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #4d9fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Inner pages (copyright, contact, work) — from copyright.html ---------- */
+
+.page-container {
+  min-height: calc(100vh - 80px);
+  margin-top: 80px;
+  margin-bottom: 80px;
+  padding: 80px 40px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 10;
+  animation: pageFadeIn 0.8s ease forwards;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.page-header h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffffff, #4d9fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(77, 159, 255, 0.3);
+}
+
+.page-header p {
+  font-size: 1.2rem;
+  color: #b0b0b0;
+  line-height: 1.8;
+}
+
+.page-card {
+  background: linear-gradient(135deg, rgba(77, 159, 255, 0.05) 0%, rgba(77, 159, 255, 0.02) 100%);
+  border: 2px solid rgba(77, 159, 255, 0.3);
+  border-radius: 15px;
+  padding: 50px 40px;
+  margin-bottom: 40px;
+  transition: all 0.4s ease;
+}
+
+.page-card:hover {
+  border-color: rgba(77, 159, 255, 0.6);
+  background: linear-gradient(135deg, rgba(77, 159, 255, 0.1) 0%, rgba(77, 159, 255, 0.05) 100%);
+  box-shadow: 0 20px 60px rgba(77, 159, 255, 0.15);
+}
+
+.page-card h2 {
+  font-size: 1.8rem;
+  color: #4d9fff;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-card h2::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 30px;
+  background: linear-gradient(180deg, #4d9fff, transparent);
+  border-radius: 2px;
+}
+
+.page-card p {
+  font-size: 1.1rem;
+  color: #d0d0d0;
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.page-card p:last-child {
+  margin-bottom: 0;
+}
+
+.notice-section {
+  background: rgba(77, 159, 255, 0.08);
+  border-left: 4px solid #4d9fff;
+  padding: 30px;
+  margin: 30px 0;
+  border-radius: 8px;
+}
+
+.notice-section h3 {
+  color: #4d9fff;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notice-section p {
+  color: #b0b0b0;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.highlight {
+  color: #4d9fff;
+  font-weight: bold;
+}
+
+.page-card .legal-text {
+  font-style: italic;
+  color: #888;
+  font-size: 0.95rem;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(77, 159, 255, 0.2);
+}
+
+.page-card .cta-button {
+  margin-top: 10px;
+}
+
+/* Pages that start with a full-bleed section need to clear the fixed header. */
+.header-offset {
+  margin-top: 80px;
+}
+
+/* ---------- Contact form (new page, same visual language) ---------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-field--full {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  color: #4d9fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.form-field label .optional {
+  color: #888;
+  font-weight: normal;
+}
+
+.form-field input,
+.form-field textarea {
+  background: rgba(77, 159, 255, 0.08);
+  border: 2px solid rgba(77, 159, 255, 0.2);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 14px 16px;
+  transition: all 0.3s ease;
+}
+
+.form-field textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: #7a8599;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: rgba(77, 159, 255, 0.7);
+  background: rgba(77, 159, 255, 0.12);
+  box-shadow: 0 0 20px rgba(77, 159, 255, 0.2);
+}
+
+.form-status {
+  margin-top: 20px;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+.contact-details a {
+  color: #4d9fff;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Responsive (legacy breakpoints) ---------- */
+
+@media (max-width: 768px) {
+  .site-header {
+    padding: 15px 20px;
+  }
+
+  .site-header .logo {
+    font-size: 22px;
+  }
+
+  .typing-container {
+    font-size: 2.5rem;
+  }
+
+  .hero-text p {
+    font-size: 1.1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-section {
+    margin-bottom: 30px;
+  }
+
+  .site-header .mobile-menu-btn {
+    display: block;
+  }
+
+  .site-header nav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: clip-path 0.5s ease;
+  }
+
+  .site-header nav.active {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .site-header nav ul {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .site-header nav ul li {
+    margin: 0;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .site-header nav ul li:last-child {
+    border-bottom: none;
+  }
+
+  .custom-cursor--site {
+    display: none;
+  }
+
+  .new-sound {
+    padding: 40px 20px;
+  }
+
+  .new-sound h2 {
+    font-size: 2rem;
+  }
+
+  .clients-section {
+    padding: 40px 20px;
+  }
+
+  .services-section {
+    padding: 60px 20px;
+  }
+
+  .services-title {
+    font-size: 2rem;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .page-container {
+    padding: 40px 20px;
+    margin-top: 70px;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .page-header p {
+    font-size: 1rem;
+  }
+
+  .page-card {
+    padding: 30px 20px;
+  }
+
+  .page-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .page-card p {
+    font-size: 1rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .typing-container {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .site-footer {
+    padding: 40px 20px 20px;
+  }
+
+  .new-sound h2 {
+    font-size: 1.5rem;
+  }
+
+  .services-title {
+    font-size: 1.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .notice-section {
+    padding: 20px;
+  }
+
+  .page-card {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-carousel,
+  .services-bg-circle,
+  .new-sound-circle,
+  .loader {
+    animation: none;
+  }
+
+  .page-container {
+    animation: none;
+  }
+}

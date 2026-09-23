@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+build
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+
+# Archived Cursor Vite/Express attempt (superseded by the Next.js app)
+.archive
