@@ -3,51 +3,34 @@
 import { useRef } from "react";
 import { services } from "@/data/services";
 import ServiceCard from "@/components/services/ServiceCard";
+import SectionLabel from "@/components/ui/SectionLabel";
 import { useGsapContext } from "@/hooks/useGsapContext";
 
-/** "WHAT WE DO" section. Each card scrubs in (y: 40, fade) as it scrolls into view. */
+/** "WHAT WE DO" panel. Cards rise in, staggered, as the grid scrolls into view. */
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGsapContext(sectionRef, (gsap, root) => {
-    root.querySelectorAll<HTMLElement>(".service-card").forEach((card, index) => {
-      gsap.from(card, {
-        scrollTrigger: { trigger: card, start: "top 85%", end: "+=50%", scrub: 0.5 },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        delay: index * 0.1,
-      });
+    gsap.from(root.querySelectorAll(".service-reveal"), {
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: "power3.out",
+      stagger: 0.12,
+      scrollTrigger: { trigger: root.querySelector(".services-grid"), start: "top 85%", once: true },
     });
   });
 
   return (
-    <section ref={sectionRef} className="services-section">
-      <div
-        className="services-bg-circle"
-        style={{
-          top: -100,
-          left: -100,
-          width: 400,
-          height: 400,
-          background: "radial-gradient(circle, rgba(77, 159, 255, 0.1) 0%, transparent 70%)",
-          animationDelay: "0s",
-        }}
-      />
-      <div
-        className="services-bg-circle"
-        style={{
-          bottom: -50,
-          right: -80,
-          width: 350,
-          height: 350,
-          background: "radial-gradient(circle, rgba(77, 159, 255, 0.08) 0%, transparent 70%)",
-          animationDelay: "2s",
-        }}
-      />
-
-      <div className="services-content">
-        <h2 className="services-title">WHAT WE DO</h2>
+    <section ref={sectionRef} className="section services-section" id="services">
+      <div className="panel services-panel">
+        <div className="section-head section-head--center">
+          <SectionLabel center>WHAT WE DO</SectionLabel>
+          <h2 className="section-title">
+            STORIES, BRANDS &amp; WORLDS <br />
+            <span className="accent">BROUGHT TO LIFE</span>
+          </h2>
+        </div>
         <div className="services-grid">
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} />

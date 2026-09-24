@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import SplitType from "split-type";
+import SectionLabel from "@/components/ui/SectionLabel";
 import { useGsapContext } from "@/hooks/useGsapContext";
 
 /** "READY TO BUILD YOUR BRAND?" — heading characters scrub in via SplitType. */
@@ -17,28 +18,32 @@ export default function CTA() {
 
     gsap
       .timeline({
-        scrollTrigger: { trigger: heading, start: "top 80%", end: "+=50%", scrub: 0.5 },
+        scrollTrigger: { trigger: heading, start: "top 85%", end: "+=40%", scrub: 0.5 },
       })
-      .from(split.chars ?? [], { y: 30, opacity: 0, stagger: 0.05, duration: 0.8 }, 0);
+      .from(split.chars ?? [], { y: 30, opacity: 0, stagger: 0.03, duration: 0.8 }, 0);
 
-    // Restore the original markup React rendered.
     return () => split.revert();
   });
 
   return (
-    <section ref={sectionRef} className="new-sound">
-      <div className="new-sound-circle new-sound-circle--a" />
-      <div className="new-sound-circle new-sound-circle--b" />
-
-      <div className="new-sound-inner">
+    <section ref={sectionRef} className="section cta-section">
+      <div className="panel cta-panel">
+        <div className="cta-glow cta-glow--a" aria-hidden="true" />
+        <div className="cta-glow cta-glow--b" aria-hidden="true" />
+        <SectionLabel center>LET&apos;S WORK TOGETHER</SectionLabel>
         <h2>
           READY TO BUILD YOUR BRAND?
           <br />
-          <span>JOIN US TODAY</span>
+          <span className="accent">JOIN US TODAY</span>
         </h2>
-        <Link href="/contact" className="cta-button">
-          JOIN US TODAY
-        </Link>
+        <div className="hero-actions hero-actions--center">
+          <Link href="/contact" className="btn btn--primary">
+            JOIN US TODAY
+          </Link>
+          <Link href="/work" className="btn btn--outline">
+            SEE OUR WORK
+          </Link>
+        </div>
       </div>
     </section>
   );

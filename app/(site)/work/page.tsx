@@ -19,7 +19,7 @@ export default function WorkPage() {
         <div className="page-card">
           <h2>Coming Soon</h2>
           <p>Our portfolio is on its way.</p>
-          <Link href="/contact" className="cta-button">
+          <Link href="/contact" className="btn btn--primary">
             JOIN US TODAY
           </Link>
         </div>
@@ -28,7 +28,7 @@ export default function WorkPage() {
           <div className="page-card" key={project.slug}>
             <h2>{project.title}</h2>
             <p>{project.summary}</p>
-            <Link href={`/work/${project.slug}`} className="cta-button">
+            <Link href={`/work/${project.slug}`} className="btn btn--primary">
               VIEW PROJECT
             </Link>
           </div>

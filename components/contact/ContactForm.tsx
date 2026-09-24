@@ -79,7 +79,7 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <button type="submit" className="cta-button">
+      <button type="submit" className="btn btn--primary">
         SEND MESSAGE
       </button>
 

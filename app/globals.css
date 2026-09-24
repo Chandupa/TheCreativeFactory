@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 @import "../styles/site.css";
-@import "../styles/about.css";
 
 /* Legacy HTML is kept for reference only — don't generate utilities from it. */
 @source not "../legacy";

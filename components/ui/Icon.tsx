@@ -1,6 +1,7 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowUp,
   faBars,
   faCopyright,
   faFilm,
@@ -10,6 +11,7 @@ import {
   faShieldHalved,
   faTriangleExclamation,
   faVideo,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
@@ -28,6 +30,8 @@ const icons = {
   lock: faLock,
   warning: faTriangleExclamation,
   copyright: faCopyright,
+  close: faXmark,
+  arrowUp: faArrowUp,
 } as const;
 
 export type IconName = keyof typeof icons;

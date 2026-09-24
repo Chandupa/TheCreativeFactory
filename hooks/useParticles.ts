@@ -18,6 +18,8 @@ export interface ParticleOptions {
   /** Class applied to the generated <canvas>. */
   canvasClassName?: string;
   count?: number;
+  /** Particle hue as "#rrggbb"; each particle gets a random brightness of it. */
+  color?: string;
   /** Minimum particle size; legacy home/copyright used 0.1, About used 0.15. */
   minSize?: number;
   /**
@@ -84,7 +86,14 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-function createGeometry(count: number, minSize: number): BufferGeometry {
+// Parsed by hand (not THREE.Color) so the values stay raw sRGB, exactly like the
+// legacy hard-coded 0.2 / 0.5 / 1.0 blue.
+function hexToRgb(hex: string): [number, number, number] {
+  const n = Number.parseInt(hex.replace("#", ""), 16);
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+}
+
+function createGeometry(count: number, minSize: number, [r, g, b]: [number, number, number]): BufferGeometry {
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
@@ -94,10 +103,10 @@ function createGeometry(count: number, minSize: number): BufferGeometry {
     positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
     positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
 
-    const blueIntensity = Math.random();
-    colors[i * 3] = 0.2 * blueIntensity;
-    colors[i * 3 + 1] = 0.5 * blueIntensity;
-    colors[i * 3 + 2] = blueIntensity;
+    const intensity = Math.random();
+    colors[i * 3] = r * intensity;
+    colors[i * 3 + 1] = g * intensity;
+    colors[i * 3 + 2] = b * intensity;
 
     sizes[i] = Math.random() * 0.5 + minSize;
   }
@@ -121,7 +130,7 @@ function createGeometry(count: number, minSize: number): BufferGeometry {
  */
 export function useParticles(
   containerRef: RefObject<HTMLElement | null>,
-  { canvasClassName, count = 2000, minSize = 0.1, sizeFromDisplaced = false }: ParticleOptions = {},
+  { canvasClassName, count = 2000, color = "#3380ff", minSize = 0.1, sizeFromDisplaced = false }: ParticleOptions = {},
 ): void {
   useEffect(() => {
     const container = containerRef.current;
@@ -147,7 +156,7 @@ export function useParticles(
     const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 30;
 
-    const geometry = createGeometry(count, minSize);
+    const geometry = createGeometry(count, minSize, hexToRgb(color));
     const mousePos = new Vector2(0, 0);
     const material = new ShaderMaterial({
       vertexShader,
@@ -229,5 +238,5 @@ export function useParticles(
       renderer.forceContextLoss();
       canvas.remove();
     };
-  }, [containerRef, canvasClassName, count, minSize, sizeFromDisplaced]);
+  }, [containerRef, canvasClassName, count, color, minSize, sizeFromDisplaced]);
 }

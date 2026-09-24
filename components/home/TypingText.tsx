@@ -1,23 +1,21 @@
 "use client";
 
+import { services } from "@/data/services";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 
-const PHRASES = [
-  "WE SEE THE UNSEEN.",
-  "WE TELL THE UNTOLD.",
-  "WE SEE THE UNSEEN, WE TELL THE UNTOLD.",
-] as const;
+const PHRASES = services.map((service) => service.name.toUpperCase());
 
-/** Isolated so only this node re-renders on each typed character. */
+/** "WE CREATE <typed service>|" accent line under the hero headline. */
 export default function TypingText() {
   const text = useTypingAnimation(PHRASES);
 
   return (
-    <h1 className="typing-container" aria-label={PHRASES[PHRASES.length - 1]}>
-      <span aria-hidden="true">{text}</span>
-      <span className="cursor" aria-hidden="true">
-        |
+    <p className="hero-typing">
+      <span className="sr-only">We create {PHRASES.join(", ")}.</span>
+      <span aria-hidden="true">
+        WE CREATE <span className="hero-typing-word">{text}</span>
+        <span className="cursor">|</span>
       </span>
-    </h1>
+    </p>
   );
 }

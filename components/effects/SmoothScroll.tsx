@@ -8,6 +8,11 @@ import { prefersReducedMotion } from "@/lib/utils";
 
 let lenisInstance: Lenis | null = null;
 
+/** The active Lenis instance (null under reduced motion or before mount). */
+export function getLenis(): Lenis | null {
+  return lenisInstance;
+}
+
 /**
  * Lenis smooth scrolling, driven by GSAP's ticker so ScrollTrigger scrubs stay
  * in sync. Skipped entirely when the user prefers reduced motion.
