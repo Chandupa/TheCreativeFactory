@@ -25,9 +25,10 @@ export const DEFAULT_OG_IMAGE = {
   alt: `${siteConfig.name} — creative agency and production studio in Sri Lanka`,
 };
 
+/** Production URL for a site path. The homepage keeps its trailing slash: https://thecreativefactory.lk/ */
 export function absoluteUrl(path = "/"): string {
   if (/^https?:\/\//.test(path)) return path;
-  return path === "/" ? siteConfig.url : `${siteConfig.url}${path.startsWith("/") ? path : `/${path}`}`;
+  return `${siteConfig.url}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 /**
