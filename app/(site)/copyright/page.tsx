@@ -1,21 +1,27 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { dmca } from "@/data/site";
 import DmcaBadge from "@/components/ui/DmcaBadge";
 import Icon from "@/components/ui/Icon";
+import { buildMetadata } from "@/lib/seo";
+import { Reveal, RevealText } from "@/components/motion/Reveal";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Copyright Notice",
-};
+  description:
+    "Copyright notice for The Creative Factory: who owns our designs, animations, films and project files, and how to request permission to use them.",
+  path: "/copyright",
+});
 
 export default function CopyrightPage() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Copyright Notice</h1>
+        <RevealText as="h1" display>
+          Copyright Notice
+        </RevealText>
       </div>
 
-      <div className="page-card">
+      <Reveal className="page-card">
         <h2>
           <Icon name="shield" /> Intellectual Property Rights
         </h2>
@@ -27,7 +33,7 @@ export default function CopyrightPage() {
           under <span className="highlight">TheCreativeFactory</span>.
         </p>
 
-        <div className="notice-section">
+        <Reveal variant="copy" className="notice-section">
           <h3>
             <Icon name="lock" /> Legal Protection
           </h3>
@@ -36,7 +42,7 @@ export default function CopyrightPage() {
             international treaties and domestic legislation. All rights are reserved and enforced to the fullest extent
             permitted by law.
           </p>
-        </div>
+        </Reveal>
 
         <DmcaBadge size="large" />
 
@@ -46,7 +52,7 @@ export default function CopyrightPage() {
           <span className="highlight">prior written permission</span> from CHANDUPA SANHITHA WEERAKKODY.
         </p>
 
-        <div className="notice-section">
+        <Reveal variant="copy" className="notice-section">
           <h3>
             <Icon name="warning" /> Unauthorized Use
           </h3>
@@ -55,9 +61,9 @@ export default function CopyrightPage() {
             <span className="highlight">legal action</span>. This includes but is not limited to civil litigation,
             injunctive relief, and recovery of damages as permitted under applicable law.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="notice-section">
+        <Reveal variant="copy" className="notice-section">
           <h3>
             <Icon name="copyright" /> All Rights Reserved
           </h3>
@@ -65,7 +71,7 @@ export default function CopyrightPage() {
             © 2026 CHANDUPA SANHITHA WEERAKKODY. All Rights Reserved. TheCreativeFactory is a company presently
             undergoing formal registration in Sri Lanka and is owned and operated by CHANDUPA SANHITHA WEERAKKODY.
           </p>
-        </div>
+        </Reveal>
 
         <p className="legal-text">
           <strong>
@@ -73,7 +79,7 @@ export default function CopyrightPage() {
             official channels.
           </strong>
         </p>
-      </div>
+      </Reveal>
 
       {/* DMCA.com badge helper, as on the legacy page. */}
       <Script src={dmca.helperScript} strategy="afterInteractive" />

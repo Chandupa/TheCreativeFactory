@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { contactInfo, mainNav, socialLinks } from "@/data/site";
@@ -23,9 +23,40 @@ export default function Header() {
     setMenuOpen(false);
   }
 
+  const menuRef = useRef<HTMLDivElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  // Return focus to the menu button when the menu is dismissed (not when a link navigates away).
+  const returnFocus = useRef(false);
+
+  const closeMenu = () => {
+    returnFocus.current = true;
+    setMenuOpen(false);
+  };
+
   useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    if (!menuOpen) {
+      if (returnFocus.current) openButtonRef.current?.focus();
+      returnFocus.current = false;
+      return;
+    }
+
+    // Modal dialog behaviour: move focus in, keep Tab inside, Escape closes.
+    closeButtonRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") return closeMenu();
+      if (e.key !== "Tab" || !menuRef.current) return;
+      const focusable = menuRef.current.querySelectorAll<HTMLElement>("a[href], button");
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [menuOpen]);
@@ -48,6 +79,7 @@ export default function Header() {
             LET&apos;S TALK
           </Link>
           <button
+            ref={openButtonRef}
             type="button"
             className="icon-btn"
             aria-label="Open menu"
@@ -66,6 +98,7 @@ export default function Header() {
       </header>
 
       <div
+        ref={menuRef}
         id="site-menu"
         className={menuOpen ? "nav-overlay open" : "nav-overlay"}
         role="dialog"
@@ -74,7 +107,13 @@ export default function Header() {
         inert={!menuOpen}
         data-lenis-prevent
       >
-        <button type="button" className="icon-btn nav-overlay-close" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+        <button
+          ref={closeButtonRef}
+          type="button"
+          className="icon-btn nav-overlay-close"
+          aria-label="Close menu"
+          onClick={closeMenu}
+        >
           <Icon name="close" />
         </button>
 

@@ -1,49 +1,47 @@
-"use client";
-
-import { useRef } from "react";
 import Link from "next/link";
-import SplitType from "split-type";
 import SectionLabel from "@/components/ui/SectionLabel";
-import { useGsapContext } from "@/hooks/useGsapContext";
+import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 
-/** "READY TO BUILD YOUR BRAND?" — heading characters scrub in via SplitType. */
-export default function CTA() {
-  const sectionRef = useRef<HTMLElement>(null);
+interface CTAAction {
+  label: string;
+  href: string;
+}
 
-  useGsapContext(sectionRef, (gsap, root) => {
-    const heading = root.querySelector<HTMLElement>("h2");
-    if (!heading) return;
+interface CTAProps {
+  label?: string;
+  title?: string;
+  accent?: string;
+  primary?: CTAAction;
+  secondary?: CTAAction;
+}
 
-    const split = new SplitType(heading, { types: "words,chars" });
-
-    gsap
-      .timeline({
-        scrollTrigger: { trigger: heading, start: "top 85%", end: "+=40%", scrub: 0.5 },
-      })
-      .from(split.chars ?? [], { y: 30, opacity: 0, stagger: 0.03, duration: 0.8 }, 0);
-
-    return () => split.revert();
-  });
-
+/** Closing call to action — the heading rises line by line from behind a mask. Defaults are the homepage copy. */
+export default function CTA({
+  label = "LET'S WORK TOGETHER",
+  title = "READY TO BUILD YOUR BRAND?",
+  accent = "JOIN US TODAY",
+  primary = { label: "START A PROJECT", href: "/contact" },
+  secondary = { label: "SEE OUR WORK", href: "/work" },
+}: CTAProps) {
   return (
-    <section ref={sectionRef} className="section cta-section">
-      <div className="panel cta-panel">
+    <section className="section cta-section">
+      <div className="panel cta-panel" data-depth={40}>
         <div className="cta-glow cta-glow--a" aria-hidden="true" />
         <div className="cta-glow cta-glow--b" aria-hidden="true" />
-        <SectionLabel center>LET&apos;S WORK TOGETHER</SectionLabel>
-        <h2>
-          READY TO BUILD YOUR BRAND?
+        <SectionLabel center>{label}</SectionLabel>
+        <RevealText display>
+          {title}{" "}
           <br />
-          <span className="accent">JOIN US TODAY</span>
-        </h2>
-        <div className="hero-actions hero-actions--center">
-          <Link href="/contact" className="btn btn--primary">
-            JOIN US TODAY
+          <span className="accent">{accent}</span>
+        </RevealText>
+        <RevealGroup variant="button" className="hero-actions hero-actions--center">
+          <Link href={primary.href} className="btn btn--primary">
+            {primary.label}
           </Link>
-          <Link href="/work" className="btn btn--outline">
-            SEE OUR WORK
+          <Link href={secondary.href} className="btn btn--outline">
+            {secondary.label}
           </Link>
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

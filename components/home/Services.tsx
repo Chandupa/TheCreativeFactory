@@ -1,41 +1,34 @@
-"use client";
-
-import { useRef } from "react";
-import { services } from "@/data/services";
+import Link from "next/link";
+import type { ServiceSummary } from "@/types/service";
 import ServiceCard from "@/components/services/ServiceCard";
 import SectionLabel from "@/components/ui/SectionLabel";
-import { useGsapContext } from "@/hooks/useGsapContext";
+import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 
-/** "WHAT WE DO" panel. Cards rise in, staggered, as the grid scrolls into view. */
-export default function Services() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useGsapContext(sectionRef, (gsap, root) => {
-    gsap.from(root.querySelectorAll(".service-reveal"), {
-      y: 60,
-      opacity: 0,
-      duration: 0.9,
-      ease: "power3.out",
-      stagger: 0.12,
-      scrollTrigger: { trigger: root.querySelector(".services-grid"), start: "top 85%", once: true },
-    });
-  });
-
+/**
+ * "WHAT WE DO" panel. Cards cascade in as the grid scrolls into view.
+ * Services arrive as props (slim summaries) so page copy stays out of the JS bundle.
+ */
+export default function Services({ services }: { services: ServiceSummary[] }) {
   return (
-    <section ref={sectionRef} className="section services-section" id="services">
-      <div className="panel services-panel">
+    <section className="section services-section" id="services" aria-labelledby="services-title">
+      <div className="panel services-panel" data-depth={40}>
         <div className="section-head section-head--center">
           <SectionLabel center>WHAT WE DO</SectionLabel>
-          <h2 className="section-title">
+          <RevealText className="section-title" id="services-title">
             STORIES, BRANDS &amp; WORLDS <br />
             <span className="accent">BROUGHT TO LIFE</span>
-          </h2>
+          </RevealText>
         </div>
-        <div className="services-grid">
+        <RevealGroup variant="card" className="services-grid">
           {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+            <ServiceCard key={service.slug} service={service} />
           ))}
-        </div>
+        </RevealGroup>
+        <RevealGroup variant="button" className="hero-actions hero-actions--center services-actions">
+          <Link href="/services" className="btn btn--outline">
+            ALL SERVICES
+          </Link>
+        </RevealGroup>
       </div>
     </section>
   );

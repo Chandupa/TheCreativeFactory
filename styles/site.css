@@ -435,9 +435,21 @@ body:has(.site) {
 }
 
 .hero-media video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Background video fades in over the poster once it can play. */
+.hero-video {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero-video.is-ready {
+  opacity: 1;
 }
 
 .hero-media-placeholder {
@@ -469,7 +481,15 @@ body:has(.site) {
   z-index: 2;
 }
 
+.hero-kicker {
+  margin-bottom: 26px;
+}
+
 .hero-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--text);
+  text-transform: uppercase;
   font-size: clamp(2.6rem, 6.2vw, 7rem);
   line-height: 0.98;
   letter-spacing: -0.035em;
@@ -807,24 +827,50 @@ body:has(.site) {
 }
 
 .services-panel {
-  padding: 100px 48px;
+  padding: 72px 40px;
 }
 
+/* Nine services: 3×3 on desktop, 2 columns on tablet, 1 on phones — no orphan cards. */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Odd card out on the last row: centre it at single-column width. */
+  .services-grid > .service-reveal:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 9px);
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-grid > .service-reveal:last-child:nth-child(odd) {
+    width: auto;
+    justify-self: stretch;
+  }
 }
 
 .service-card {
   position: relative;
   height: 100%;
-  padding: 60px 28px 52px;
+  padding: 40px 24px 34px;
   text-align: center;
   border: 1px solid var(--border);
+  display: block;
   border-radius: var(--radius-md);
   background: var(--bg);
-  cursor: default;
+  cursor: pointer;
   transition:
     background-color 0.4s ease,
     border-color 0.4s ease,
@@ -836,71 +882,94 @@ body:has(.site) {
 .service-card::after {
   content: "";
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
   border-color: var(--border-strong);
   border-style: solid;
   transition: border-color 0.4s ease;
 }
 
 .service-card::before {
-  top: 18px;
-  left: 18px;
+  top: 14px;
+  left: 14px;
   border-width: 2px 0 0 2px;
   border-top-left-radius: 6px;
 }
 
 .service-card::after {
-  right: 18px;
-  bottom: 18px;
+  right: 14px;
+  bottom: 14px;
   border-width: 0 2px 2px 0;
   border-bottom-right-radius: 6px;
 }
 
 .service-icon {
-  width: 76px;
-  height: 76px;
-  margin: 0 auto 26px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 18px;
   display: grid;
   place-items: center;
   border-radius: 50%;
   background: var(--surface-2);
   color: var(--accent);
-  font-size: 30px;
+  font-size: 24px;
   transition: background-color 0.4s ease;
 }
 
 .service-name {
-  margin-bottom: 14px;
-  font-size: 1.35rem;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
   transition: color 0.4s ease;
 }
 
 .service-description {
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.65;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   transition: color 0.4s ease;
 }
 
-.service-card:hover {
+.service-more {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color 0.4s ease;
+}
+
+.services-actions {
+  margin-top: 36px;
+}
+
+.service-card:hover,
+.service-card:focus-visible {
   transform: translateY(-8px);
   background: var(--accent);
   border-color: var(--accent);
 }
 
 .service-card:hover::before,
-.service-card:hover::after {
+.service-card:hover::after,
+.service-card:focus-visible::before,
+.service-card:focus-visible::after {
   border-color: rgba(11, 14, 19, 0.35);
 }
 
-.service-card:hover .service-icon {
+.service-card:hover .service-icon,
+.service-card:focus-visible .service-icon {
   background: var(--accent-ink);
 }
 
 .service-card:hover .service-name,
-.service-card:hover .service-description {
+.service-card:hover .service-description,
+.service-card:hover .service-more,
+.service-card:focus-visible .service-name,
+.service-card:focus-visible .service-description,
+.service-card:focus-visible .service-more {
   color: var(--accent-ink);
 }
 
@@ -912,11 +981,11 @@ body:has(.site) {
 
 .clients-glow {
   position: absolute;
-  left: 50%;
-  top: 55%;
+  /* Centred with offsets, not a transform, so <Parallax> can own `transform`. */
+  left: calc(50% - min(550px, 45vw));
+  top: calc(55% - 210px);
   width: min(1100px, 90vw);
   height: 420px;
-  transform: translate(-50%, -50%);
   background: radial-gradient(50% 50% at 50% 50%, rgba(var(--accent-rgb), 0.22), transparent 70%);
   pointer-events: none;
 }
@@ -1039,15 +1108,43 @@ body:has(.site) {
 
 .site-footer {
   position: relative;
-  padding-top: 100px;
+  padding-top: clamp(32px, 4vw, 64px);
   border-top: 1px solid var(--border);
   background: radial-gradient(60% 80% at 50% 120%, rgba(var(--accent-rgb), 0.1), transparent 70%), var(--bg);
 }
 
+/* Oversized wordmark opening the footer: spans ~96vw, height follows the SVG's
+   viewBox ratio so nothing shifts when the font loads. */
+.brandmark {
+  width: min(96vw, 100%);
+  margin: 0 auto clamp(48px, 7vw, 110px);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.brandmark-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+.brandmark-svg text {
+  font-family: var(--font-display);
+  fill: var(--text);
+}
+
+.brandmark-svg .brandmark-accent {
+  fill: var(--accent);
+}
+
 .footer-top {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 48px;
 }
 
 .footer-brand p {
@@ -1063,14 +1160,14 @@ body:has(.site) {
   gap: 10px;
 }
 
-.footer-section h3 {
+.footer-section h2 {
   position: relative;
   margin-bottom: 26px;
   padding-bottom: 14px;
   font-size: 1.1rem;
 }
 
-.footer-section h3::after {
+.footer-section h2::after {
   content: "";
   position: absolute;
   left: 0;
@@ -1199,18 +1296,6 @@ body:has(.site) {
   min-height: 100vh;
   margin-inline: auto;
   padding: calc(var(--header-h) + 90px) 0 120px;
-  animation: pageFadeIn 0.8s ease forwards;
-}
-
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .page-header {
@@ -1347,7 +1432,7 @@ body:has(.site) {
 }
 
 .form-field label .optional {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--muted);
 }
 
@@ -1417,7 +1502,7 @@ body:has(.site) {
   }
 
   .footer-top {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .footer-brand {
@@ -1477,7 +1562,10 @@ body:has(.site) {
     width: calc(100% - 32px);
   }
 
-  .services-panel,
+  .services-panel {
+    padding: 52px 18px;
+  }
+
   .bio-panel {
     padding: 64px 22px;
   }
@@ -1532,10 +1620,31 @@ body:has(.site) {
   }
 }
 
+/* ---------- Scroll reveals (components/motion) ---------- */
+
+/* Per-word line masks, present only while a heading animates (lib/splitWords).
+   Clip-path rather than overflow keeps the inline-block on the text baseline;
+   the negative insets leave room for overhangs and accents. */
+.rv-mask {
+  display: inline-block;
+  clip-path: inset(-0.3em -0.2em -0.14em -0.2em);
+}
+
+.rv-word {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* CSS transitions would lag behind GSAP's per-frame transforms; hover
+   transitions come back as soon as the reveal finishes. */
+.is-revealing,
+.is-revealing * {
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cta-glow,
   .loader,
-  .page-container,
   .hero-typing .cursor {
     animation: none;
   }

@@ -1,6 +1,7 @@
 import type { ComponentType, SVGProps } from "react";
 import { ArrowUpRight, Mail, MessageCircle, Phone } from "lucide-react";
 import SectionLabel from "@/components/ui/SectionLabel";
+import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 
 interface ContactLink {
   label: string;
@@ -39,12 +40,12 @@ export default function ContactCards() {
       <div className="container">
         <div className="section-head">
           <SectionLabel>GET IN TOUCH</SectionLabel>
-          <h2 className="section-title">
+          <RevealText className="section-title">
             LET&apos;S <span className="accent">TALK</span>
-          </h2>
+          </RevealText>
         </div>
 
-        <div className="contact-cards">
+        <RevealGroup variant="card" className="contact-cards">
           {links.map(({ label, value, href, Icon, external }) => (
             <a
               key={label}
@@ -62,7 +63,7 @@ export default function ContactCards() {
               <ArrowUpRight className="contact-card-arrow" width={22} height={22} aria-hidden="true" />
             </a>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

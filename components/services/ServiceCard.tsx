@@ -1,17 +1,21 @@
-import type { Service } from "@/types/service";
+import Link from "next/link";
+import type { ServiceSummary } from "@/types/service";
 import Icon from "@/components/ui/Icon";
 
-export default function ServiceCard({ service }: { service: Service }) {
+export default function ServiceCard({ service }: { service: ServiceSummary }) {
   return (
-    // Outer wrapper is what GSAP animates, so the card's own hover transform isn't overridden.
+    // Outer wrapper is what the reveal animates, so the card's own hover transform isn't overridden.
     <div className="service-reveal">
-      <div className="service-card">
-        <div className="service-icon">
+      <Link href={`/services/${service.slug}`} className="service-card">
+        <span className="service-icon">
           <Icon name={service.icon} />
-        </div>
+        </span>
         <h3 className="service-name">{service.name}</h3>
         <p className="service-description">{service.description}</p>
-      </div>
+        <span className="service-more">
+          Explore {service.name.toLowerCase()} <span aria-hidden="true">→</span>
+        </span>
+      </Link>
     </div>
   );
 }

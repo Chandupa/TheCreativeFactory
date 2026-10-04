@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { markLoaderDone } from "@/lib/loader";
 
 const FADE_MS = 1000;
 
@@ -24,6 +25,7 @@ export default function LoadingScreen() {
     const start = () => {
       fadeTimer = setTimeout(() => {
         setPhase("fading");
+        markLoaderDone();
         removeTimer = setTimeout(() => setPhase("gone"), FADE_MS);
       }, delay);
     };

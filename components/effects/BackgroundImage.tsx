@@ -3,6 +3,8 @@ import Image, { type StaticImageData } from "next/image";
 interface BackgroundImageProps {
   src: StaticImageData;
   className: string;
+  /** Parallax travel in px (see components/motion). */
+  parallax?: number;
 }
 
 /**
@@ -11,9 +13,9 @@ interface BackgroundImageProps {
  * background-position: center` — so the multi-MB originals are served as
  * viewport-sized AVIF/WebP instead.
  */
-export default function BackgroundImage({ src, className }: BackgroundImageProps) {
+export default function BackgroundImage({ src, className, parallax }: BackgroundImageProps) {
   return (
-    <div className={className} aria-hidden="true">
+    <div className={className} aria-hidden="true" data-parallax={parallax}>
       <Image src={src} alt="" fill sizes="100vw" preload quality={75} style={{ objectFit: "cover" }} />
     </div>
   );

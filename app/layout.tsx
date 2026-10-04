@@ -2,16 +2,36 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import SmoothScroll from "@/components/effects/SmoothScroll";
-import { dmca } from "@/data/site";
+import { dmca, siteConfig } from "@/data/site";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import "./globals.css";
 
+// Site-wide defaults. Every indexable page overrides title, description,
+// canonical, openGraph and twitter through buildMetadata() in lib/seo.ts.
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "TheCreativeFactory",
-    template: "%s - TheCreativeFactory",
+    default: `${siteConfig.name} | Creative Agency & Production Studio, Sri Lanka`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "At The Creative Factory, we believe in the transformative power of storytelling and innovation. Film Production, Post Production, Animation, Design and Game Development.",
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  formatDetection: { telephone: false, email: false, address: false },
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
+    url: siteConfig.url,
+    images: [DEFAULT_OG_IMAGE],
+  },
+  twitter: { card: "summary_large_image" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-video-preview": -1, "max-snippet": -1 },
+  },
   other: {
     "dmca-site-verification": dmca.verification,
   },
@@ -20,7 +40,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#000000",
+  themeColor: "#0b0e13",
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;

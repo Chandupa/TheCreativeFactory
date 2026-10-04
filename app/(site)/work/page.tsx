@@ -1,39 +1,78 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { projects } from "@/data/projects";
+import CTA from "@/components/home/CTA";
+import JsonLd from "@/components/seo/JsonLd";
+import PageIntro from "@/components/ui/PageIntro";
+import ProjectCard from "@/components/work/ProjectCard";
+import { projectPath, projects } from "@/data/projects";
+import { servicePath, services } from "@/data/services";
+import { buildMetadata } from "@/lib/seo";
+import { itemListSchema } from "@/lib/schema";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
-export const metadata: Metadata = {
-  title: "Our Work",
-};
+// With no published case studies this page is a placeholder, so it stays out
+// of the index (and the sitemap) until the first project goes live.
+export const metadata = buildMetadata({
+  title: "Our Work & Case Studies",
+  description:
+    "Selected case studies from The Creative Factory — film, animation, design, photography, games and digital marketing for brands in Sri Lanka.",
+  path: "/work",
+  noindex: projects.length === 0,
+});
 
-// The legacy "OUR WORK" link pointed to "#". Projects will be loaded from
-// Supabase later; until then this renders whatever is in data/projects.ts.
 export default function WorkPage() {
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Our Work</h1>
-      </div>
+    <>
+      {projects.length ? (
+        <JsonLd data={itemListSchema(projects.map((p) => ({ name: p.title, path: projectPath(p.slug) })))} />
+      ) : null}
 
-      {projects.length === 0 ? (
-        <div className="page-card">
-          <h2>Coming Soon</h2>
-          <p>Our portfolio is on its way.</p>
-          <Link href="/contact" className="btn btn--primary">
-            JOIN US TODAY
-          </Link>
+      <PageIntro
+        eyebrow="OUR WORK"
+        title={
+          <>
+            SELECTED <span className="accent">WORK</span>
+          </>
+        }
+        breadcrumbs={[{ name: "Work", path: "/work" }]}
+        lead={
+          <p>
+            Films, animation, design and games made for brands — each case study covers the brief, the idea and how it
+            was produced.
+          </p>
+        }
+      />
+
+      <section className="section section--tight" aria-label="Projects">
+        <div className="container">
+          {projects.length === 0 ? (
+            <Reveal className="page-card">
+              <h2>Case studies coming soon</h2>
+              <p>
+                We&apos;re preparing our portfolio. In the meantime, explore what we do:{" "}
+                {services.map((service, index) => (
+                  <span key={service.slug}>
+                    <Link href={servicePath(service.slug)} className="text-link">
+                      {service.name.toLowerCase()}
+                    </Link>
+                    {index < services.length - 2 ? ", " : index === services.length - 2 ? " and " : "."}
+                  </span>
+                ))}
+              </p>
+              <Link href="/contact" className="btn btn--primary">
+                START A PROJECT
+              </Link>
+            </Reveal>
+          ) : (
+            <RevealGroup variant="project" className="project-grid">
+              {projects.map((project) => (
+                <ProjectCard key={project.slug} project={project} headingLevel={2} />
+              ))}
+            </RevealGroup>
+          )}
         </div>
-      ) : (
-        projects.map((project) => (
-          <div className="page-card" key={project.slug}>
-            <h2>{project.title}</h2>
-            <p>{project.summary}</p>
-            <Link href={`/work/${project.slug}`} className="btn btn--primary">
-              VIEW PROJECT
-            </Link>
-          </div>
-        ))
-      )}
-    </div>
+      </section>
+
+      <CTA secondary={{ label: "OUR SERVICES", href: "/services" }} />
+    </>
   );
 }

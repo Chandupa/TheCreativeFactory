@@ -1,18 +1,30 @@
 import Link from "next/link";
-import { contactInfo, footerLinks, socialLinks } from "@/data/site";
+import { insights } from "@/content/insights";
+import { contactInfo, footerLinks, siteConfig, socialLinks } from "@/data/site";
+import { servicePath, services } from "@/data/services";
 import CurrentYear from "@/components/ui/CurrentYear";
 import DmcaBadge from "@/components/ui/DmcaBadge";
 import SocialIcon from "@/components/ui/SocialIcon";
+import FooterBrandMark from "./FooterBrandMark";
 import Logo from "./Logo";
+import { Reveal, RevealGroup } from "@/components/motion/Reveal";
+
+// Insights joins the footer once there is something published to link to.
+const quickLinks = insights.length
+  ? [...footerLinks.slice(0, 4), { label: "Insights", href: "/insights" }, ...footerLinks.slice(4)]
+  : footerLinks;
 
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <div className="container footer-top">
+      <FooterBrandMark />
+
+      <RevealGroup variant="copy" className="container footer-top">
         <div className="footer-brand">
           <Logo className="logo logo--left" />
           <p>
-            Film Production | Post Production | Animation. <br /> Server Hosting | Web Hosting.
+            Creative agency &amp; production studio in Sri Lanka. <br />
+            Design | Animation | Film &amp; Photography | Games | SEO &amp; Performance Marketing.
           </p>
           <div className="footer-socials">
             {socialLinks.map((social) => (
@@ -23,19 +35,30 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="footer-section">
-          <h3>Quick Links</h3>
+        <nav className="footer-section" aria-labelledby="footer-services">
+          <h2 id="footer-services">Services</h2>
           <ul>
-            {footerLinks.map((link) => (
+            {services.map((service) => (
+              <li key={service.slug}>
+                <Link href={servicePath(service.slug)}>{service.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav className="footer-section" aria-labelledby="footer-links">
+          <h2 id="footer-links">Quick Links</h2>
+          <ul>
+            {quickLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href}>{link.label}</Link>
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
         <div className="footer-section">
-          <h3>Contact</h3>
+          <h2>Contact</h2>
           <address>
             <p>{contactInfo.company}</p>
             <p>{contactInfo.address}</p>
@@ -47,14 +70,14 @@ export default function Footer() {
             </p>
           </address>
         </div>
-      </div>
+      </RevealGroup>
 
-      <div className="container footer-bottom">
+      <Reveal variant="fade" className="container footer-bottom">
         <p>
-          &copy; <CurrentYear /> TheCreativeFactory. All rights reserved. ESTD 2019.
+          &copy; <CurrentYear /> {siteConfig.name}. All rights reserved. ESTD {siteConfig.foundingYear}.
         </p>
         <DmcaBadge size="small" />
-      </div>
+      </Reveal>
     </footer>
   );
 }

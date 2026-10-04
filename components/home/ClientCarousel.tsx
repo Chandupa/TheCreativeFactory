@@ -22,7 +22,7 @@ export default function ClientCarousel({ clients, reverse = false }: ClientCarou
   const loop = [...clients, ...clients];
 
   return (
-    <div ref={viewportRef} className="marquee">
+    <div ref={viewportRef} className="marquee" data-reveal="up">
       <div ref={trackRef} className="marquee-track">
         {loop.map((client, index) => (
           <div className="logo-item" key={`${client.id}-${index}`} aria-hidden={index >= clients.length}>

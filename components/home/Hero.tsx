@@ -2,33 +2,44 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import SplitType from "split-type";
 import { stats } from "@/data/site";
 import { useGsapContext } from "@/hooks/useGsapContext";
+import { whenLoaderDone } from "@/lib/loader";
+import { splitWords } from "@/lib/splitWords";
 import HeroMedia from "./HeroMedia";
 import StatCounter from "./StatCounter";
 import TypingText from "./TypingText";
 
-export default function Hero() {
+/** `phrases` are the service names for the typing line, passed from the server page. */
+export default function Hero({ phrases }: { phrases: string[] }) {
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Page-load intro, played as the loading screen lifts (the header slides in
+  // first, from <ScrollReveal>): label → title lines → typing line → copy →
+  // buttons → stats, while the background settles in underneath. Readable
+  // within ~1s; the whole sequence is done in under 2s.
   useGsapContext(sectionRef, (gsap, root) => {
-    const lines = root.querySelectorAll<HTMLElement>(".hero-line");
-    const split = new SplitType(Array.from(lines), { types: "words" });
+    const k = window.matchMedia("(max-width: 768px)").matches ? 0.55 : 1;
+    const title = root.querySelector<HTMLElement>(".hero-title");
+    const split = title ? splitWords(title) : null;
+    const rise = (y: number) => ({ y: y * k, opacity: 0, duration: 0.9 });
 
-    // On a first visit the loading screen covers the hero for ~2s; wait for it.
-    const delay = document.querySelector(".loading-screen") ? 1.7 : 0.2;
+    const tl = gsap.timeline({ paused: true, defaults: { ease: "reveal" }, onComplete: () => split?.revert() });
+    tl.from(root.querySelector(".hero-media"), { opacity: 0, scale: 1.12, duration: 1.8 }, 0)
+      .from(root.querySelector(".hero-kicker"), rise(20), 0.1);
+    split?.lines.forEach((line, i) => {
+      tl.from(line, { yPercent: 120, opacity: 0, duration: 1.2 }, 0.2 + i * 0.1);
+    });
+    tl.from(root.querySelector(".hero-typing"), rise(24), 0.5)
+      .from(root.querySelector(".hero-copy p"), rise(20), 0.62)
+      .from(root.querySelectorAll(".hero-copy .btn"), { ...rise(15), stagger: 0.08 }, 0.72)
+      .from(root.querySelectorAll(".hero-stats .stat"), { ...rise(24), stagger: 0.08 }, 0.78);
 
-    gsap
-      .timeline({ delay })
-      .from(split.words ?? [], { yPercent: 110, duration: 1, ease: "power4.out", stagger: 0.08 })
-      .from(
-        root.querySelectorAll(".hero-reveal"),
-        { y: 30, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.12 },
-        "-=0.5",
-      );
-
-    return () => split.revert();
+    const unsubscribe = whenLoaderDone(() => tl.play());
+    return () => {
+      unsubscribe();
+      split?.revert();
+    };
   });
 
   return (
@@ -37,30 +48,31 @@ export default function Hero() {
       <div className="hero-overlay" aria-hidden="true" />
 
       <div className="container hero-inner">
-        <h1 className="hero-title">
+        {/* The H1 says what the studio is; the slogan below stays the dominant visual. */}
+        <h1 className="eyebrow hero-kicker">Creative Agency &amp; Production Studio in Sri Lanka</h1>
+        <p className="hero-title">
           <span className="hero-line">
             WE SEE THE <span className="accent">UNSEEN</span>
-          </span>
+          </span>{" "}
           <span className="hero-line">
             WE TELL THE <span className="accent">UNTOLD</span>
           </span>
-        </h1>
+        </p>
 
-        <div className="hero-reveal">
-          <TypingText />
-        </div>
+        <TypingText phrases={phrases} />
 
         <div className="hero-bottom">
-          <div className="hero-stats hero-reveal">
+          <div className="hero-stats">
             {stats.map((stat) => (
               <StatCounter key={stat.label} stat={stat} />
             ))}
           </div>
 
-          <div className="hero-copy hero-reveal">
+          <div className="hero-copy">
             <p>
-              At The Creative Factory, we believe in the transformative power of storytelling and innovation. We
-              specialize in crafting compelling narratives and providing cutting-edge solutions to help you stand out.
+              The Creative Factory is a Sri Lankan creative studio, established in 2019. We design brands, animate
+              ideas, shoot and finish films and photography, build games, and grow brands through SEO and performance
+              marketing — taking each project from first concept to final delivery.
             </p>
             <div className="hero-actions">
               <Link href="/contact" className="btn btn--primary">

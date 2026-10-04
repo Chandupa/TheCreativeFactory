@@ -6,7 +6,11 @@ interface SectionLabelProps {
   center?: boolean;
 }
 
-/** Small accent "eyebrow" above a section heading, e.g. "— WHAT WE DO —". */
+/** Small accent "eyebrow" above a section heading, e.g. "— WHAT WE DO —". Fades in on scroll. */
 export default function SectionLabel({ children, center = false }: SectionLabelProps) {
-  return <span className={center ? "eyebrow eyebrow--center" : "eyebrow"}>{children}</span>;
+  return (
+    <span className={center ? "eyebrow eyebrow--center" : "eyebrow"} data-reveal="fade">
+      {children}
+    </span>
+  );
 }
