@@ -1,0 +1,174 @@
+---
+title: "AI Agents Are Getting More Power. Nvidia Wants a Kill Switch Outside Their Control."
+excerpt: "AI agents are beginning to do more than answer questions — they can operate software, access systems and take actions. Nvidia's new safety architecture is built around a simple idea: the agent shouldn't be the only thing deciding whether its actions are safe."
+status: published
+publishedAt: '2026-10-04T22:35'
+articleType: news
+category: technology
+subcategory: "AI / Security"
+tags:
+  - "Nvidia"
+  - "AI Agents"
+  - "AI Safety"
+  - "Cybersecurity"
+  - "OpenShell"
+  - "Sentry"
+  - "Agentic AI"
+author: chandupa-weerakkody
+featuredImage: /media/journal/articles/nvidia-independent-controls-ai-agents/featuredImage.jpg
+featuredImageAlt: "Abstract illustration: a glowing lime network of connected nodes, representing an autonomous AI agent, sits inside a dashed secure boundary while a separate monitoring node outside the boundary watches over it."
+featuredImageCaption: 'Illustration: TCF Journal'
+featured: false
+editorPick: false
+breakingNews: false
+relatedServices: []
+seoTitle: "Nvidia's New Safety Platform Puts Independent Controls Around AI Agents"
+seoDescription: "Nvidia's Open Agent Safety Platform introduces software boundaries and independent hardware monitoring designed to stop AI agents when they move beyond their permitted actions."
+---
+The next generation of artificial intelligence isn't waiting for you to click every button.
+
+AI agents can increasingly use tools, navigate software, interact with data and execute multi-step tasks on a user's behalf.
+
+That makes them useful.
+
+It also creates a fundamentally different security problem.
+
+A chatbot producing a bad answer is one thing. An autonomous system with permission to access corporate tools, manipulate data or operate infrastructure is something else entirely.
+
+Nvidia's answer is to put security controls around the agent that the agent itself cannot simply ignore.
+
+The company has introduced the **NVIDIA Open Agent Safety Platform**, combining open-source runtime controls with an optional hardware-level monitoring system designed to supervise what AI agents actually do.
+
+The interesting part isn't another AI model.
+
+It's the architecture surrounding it.
+
+## The problem with trusting the agent
+
+Most software security assumes that applications operate within clearly defined permissions.
+
+AI agents complicate that assumption.
+
+An agent may receive a legitimate instruction and then independently determine how to accomplish it.
+
+That's the point.
+
+But it also means the path between instruction and action isn't always predictable.
+
+An agent could use the wrong tool, access information it shouldn't, follow malicious instructions hidden inside external content or discover an unexpected route around an application-level restriction.
+
+In other words, telling an AI agent to "behave safely" isn't necessarily enough.
+
+Nvidia's approach is based on separating the intelligence making decisions from the systems enforcing the boundaries.
+
+## OpenShell creates the boundary
+
+The first major component is **NVIDIA OpenShell**.
+
+OpenShell is open-source software designed to create a secure runtime environment around AI agents.
+
+It can trace actions and enforce policies while an agent is operating.
+
+Think of it as a controlled workspace.
+
+The agent can still reason and act, but its actions take place inside boundaries defined by a separate security layer.
+
+According to Nvidia, OpenShell is designed to work on its Vera CPUs but can also be extended to third-party compute platforms, including systems based on Arm and Intel technology.
+
+That openness matters.
+
+Agent security will be considerably less useful if every model, processor or enterprise platform requires an entirely different safety architecture.
+
+## Then there's Sentry
+
+The second component takes the idea further.
+
+Nvidia calls it **Sentry**.
+
+Sentry uses the company's BlueField-4 DPU as an independent, out-of-band monitoring system.
+
+That distinction is important.
+
+Instead of asking the same environment running the AI agent to police itself, monitoring can occur through separate hardware.
+
+Nvidia says Sentry can continuously watch agent behaviour and quarantine an agent within milliseconds if it attempts to operate outside its permitted boundaries.
+
+Conceptually, this resembles security systems used elsewhere in computing.
+
+You don't necessarily trust an application to decide whether the application has been compromised.
+
+You build another layer capable of intervening.
+
+## AI safety is becoming an infrastructure problem
+
+For years, much of the AI safety conversation focused on models.
+
+Is the model aligned?
+
+Will it produce harmful information?
+
+Can its safeguards be bypassed?
+
+Those questions still matter.
+
+But agents create another category of risk.
+
+What can the AI actually **do**?
+
+A model that can generate dangerous instructions is a content-safety problem.
+
+An agent with credentials, tools and permission to execute operations creates an infrastructure-security problem.
+
+That's why Nvidia's platform is notable.
+
+It moves some of the safety conversation away from attempting to perfectly control model behaviour and toward controlling the environment in which that behaviour can produce consequences.
+
+## The industry is already gathering around the idea
+
+Nvidia isn't positioning this as something it intends to solve alone.
+
+The company says organizations including Anthropic, Microsoft, Cisco, CrowdStrike, Dell Technologies, Hugging Face, Palo Alto Networks, Salesforce, SAP, ServiceNow and others are participating in the broader ecosystem around the initiative.
+
+That reflects how quickly agent security is becoming a shared problem.
+
+The more autonomous AI becomes, the more it begins to resemble another privileged user inside an organization.
+
+Except this user can potentially operate continuously, at machine speed.
+
+## Why hardware-level monitoring matters
+
+Software restrictions are useful, but software can fail.
+
+A vulnerability can be exploited.
+
+Permissions can be misconfigured.
+
+An agent may find a path its developers didn't anticipate.
+
+Independent hardware monitoring introduces another defensive layer.
+
+Even if something goes wrong higher in the stack, another system can still observe and potentially interrupt the behaviour.
+
+It is essentially the same reason critical systems rarely depend on a single safeguard.
+
+Redundancy matters.
+
+## TCF Journal Take
+
+AI agents are quickly becoming one of the industry's favourite ideas.
+
+Give an AI a goal, provide tools and let it figure out the intermediate steps.
+
+It's powerful precisely because developers don't have to explicitly program every action.
+
+That is also why agent security can't depend entirely on predicting every action beforehand.
+
+Nvidia's approach points toward an important principle for the agentic era:
+
+**AI autonomy and AI authority should not be the same thing.**
+
+An agent can be allowed to decide what it wants to do.
+
+Another system should still decide whether it's actually allowed to do it.
+
+As agents move from demos into real businesses, that distinction may become one of the most important layers of AI infrastructure.

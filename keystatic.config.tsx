@@ -80,6 +80,10 @@ export default config({
           defaultValue: "article",
         }),
         category: fields.relationship({ label: "Category", collection: "categories", validation: { isRequired: true } }),
+        subcategory: fields.text({
+          label: "Subcategory",
+          description: "Optional finer topic shown next to the category, e.g. \"AI / Security\" or \"Computing\".",
+        }),
         tags: fields.array(fields.text({ label: "Tag" }), {
           label: "Tags",
           itemLabel: (props) => props.value,

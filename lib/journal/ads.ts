@@ -44,9 +44,10 @@ export function adUnitForSlot(slot: string): AdUnitConfig | undefined {
 
 /*
  * In-article placement rules (word counts are of the article body):
- *  - Article Top: after the introduction — at least 3 paragraphs and
- *    TOP_MIN_WORDS_BEFORE words in (or a shorter intro ending at a section
- *    heading) — with enough article left after it.
+ *  - Article Top: at the end of the introduction (just before the first
+ *    section heading) when the intro is 80–300 words over 3+ paragraphs;
+ *    otherwise after 3+ paragraphs and TOP_MIN_WORDS_BEFORE words. Always
+ *    with enough article left after it.
  *  - Article Square: only in articles of SQUARE_MIN_ARTICLE_WORDS or more,
  *    near the middle (preferring a section break), well clear of the first
  *    ad and of the end.
@@ -57,10 +58,12 @@ export function adUnitForSlot(slot: string): AdUnitConfig | undefined {
 export const AD_PLACEMENT = {
   TOP_MIN_PARAGRAPHS_BEFORE: 3,
   TOP_MIN_WORDS_BEFORE: 120,
-  /** A shorter intro still qualifies when it ends at a section heading. */
+  /** An introduction that ends at a section heading qualifies from this length… */
   TOP_SECTION_BREAK_MIN_WORDS: 80,
+  /** …up to this length (longer intros get the ad part-way through instead). */
+  TOP_MAX_INTRO_WORDS: 300,
   TOP_MIN_WORDS_AFTER: 80,
-  SQUARE_MIN_ARTICLE_WORDS: 900,
+  SQUARE_MIN_ARTICLE_WORDS: 700,
   SQUARE_TARGET_FRACTION: 0.55,
   /** A section break within ~15% of the article (in words) of the target wins over a mid-section gap. */
   SQUARE_SECTION_BREAK_BONUS: 0.15,

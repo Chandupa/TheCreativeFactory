@@ -201,16 +201,21 @@ export function placeAds(blocks: Block[]): { top?: number; square?: number } {
   const valid = (i: number) => i < blocks.length - 1 && blocks[i].canPrecedeAd;
 
   const nextIsHeading = (i: number) => blocks[i + 1]?.node.type === "heading";
-  // First point after the introduction: enough paragraphs and words read — or,
-  // at the end of a shorter intro, the natural break before the first section.
-  const top = blocks.findIndex(
-    (_, i) =>
-      valid(i) &&
-      paragraphsBefore[i] >= AD_PLACEMENT.TOP_MIN_PARAGRAPHS_BEFORE &&
-      (before[i] >= AD_PLACEMENT.TOP_MIN_WORDS_BEFORE ||
-        (nextIsHeading(i) && before[i] >= AD_PLACEMENT.TOP_SECTION_BREAK_MIN_WORDS)) &&
-      total - before[i] >= AD_PLACEMENT.TOP_MIN_WORDS_AFTER,
-  );
+  const fitsTop = (i: number, minWords: number) =>
+    valid(i) &&
+    paragraphsBefore[i] >= AD_PLACEMENT.TOP_MIN_PARAGRAPHS_BEFORE &&
+    before[i] >= minWords &&
+    total - before[i] >= AD_PLACEMENT.TOP_MIN_WORDS_AFTER;
+  // Preferred: the end of the introduction (just before the first section
+  // heading), so the ad never interrupts the intro mid-thought. Otherwise, the
+  // first point after enough of the article has been read.
+  const introEnd = blocks.findIndex((b) => b.node.type === "heading") - 1;
+  const top =
+    introEnd >= 0 &&
+    before[introEnd] <= AD_PLACEMENT.TOP_MAX_INTRO_WORDS &&
+    fitsTop(introEnd, AD_PLACEMENT.TOP_SECTION_BREAK_MIN_WORDS)
+      ? introEnd
+      : blocks.findIndex((_, i) => fitsTop(i, AD_PLACEMENT.TOP_MIN_WORDS_BEFORE));
   if (top < 0) return {};
   if (total < AD_PLACEMENT.SQUARE_MIN_ARTICLE_WORDS) return { top };
 

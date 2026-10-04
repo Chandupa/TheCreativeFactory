@@ -118,6 +118,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <p className="jarticle-kicker">
             {article.breakingNews ? <span className="jcard-flag">Breaking</span> : null}
             <Link href={categoryPath(article.category.slug)}>{article.category.name}</Link>
+            {article.subcategory ? <span className="jarticle-subcategory">{article.subcategory}</span> : null}
           </p>
           <h1 className="jarticle-title">{article.title}</h1>
           <p className="jarticle-standfirst">{article.excerpt}</p>

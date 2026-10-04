@@ -584,6 +584,16 @@
   color: var(--accent);
 }
 
+.jarticle-subcategory {
+  color: var(--muted);
+}
+
+.jarticle-subcategory::before {
+  content: "·";
+  margin-right: 10px;
+  color: var(--muted);
+}
+
 .jarticle-title {
   font-size: clamp(2rem, 5vw, 3.8rem);
   line-height: 1.04;

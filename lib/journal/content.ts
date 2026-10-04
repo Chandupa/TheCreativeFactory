@@ -41,6 +41,8 @@ export interface ArticleSummary {
   updatedAt: string | null;
   articleType: "article" | "news";
   category: Category;
+  /** Optional finer topic, e.g. "AI / Security". */
+  subcategory: string;
   tags: string[];
   author: Author;
   featuredImage: string;
@@ -123,6 +125,7 @@ const loadAll = cache(async () => {
       updatedAt: entry.updatedAt ? toIsoDateTime(entry.updatedAt) : null,
       articleType: entry.articleType as "article" | "news",
       category,
+      subcategory: entry.subcategory.trim(),
       tags: entry.tags.map((tag) => tag.trim()).filter(Boolean),
       author,
       featuredImage: entry.featuredImage,
