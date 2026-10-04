@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import AdSlot from "@/components/journal/AdSlot";
 import ArticleBody from "@/components/journal/ArticleBody";
 import ArticleCard from "@/components/journal/ArticleCard";
 import ArticleTracking from "@/components/journal/ArticleTracking";
@@ -158,8 +157,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <div className="container jarticle-layout">
           <div className="jarticle-main">
-            <AdSlot placement="article-top" />
-            <ArticleBody content={article.content} />
+            {/* Ads are injected inside the body by ArticleBody (see lib/journal/ads.ts). */}
+            <ArticleBody content={article.content} articleSlug={article.slug} />
 
             {article.tags.length ? (
               <ul className="jarticle-tags" aria-label="Tags">
@@ -196,8 +195,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </aside>
             ) : null}
 
-            <AdSlot placement="article-end" />
-
             <aside className="jarticle-author-card" aria-label="About the author">
               {article.author.avatar ? (
                 <Image src={article.author.avatar} alt="" width={72} height={72} className="jarticle-avatar" />
@@ -221,7 +218,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {sidebar.length ? (
             <aside className="jarticle-aside" aria-label={`More in ${article.category.name}`}>
               <div className="jarticle-aside-sticky">
-                <AdSlot placement="sidebar" />
                 <h2 className="journal-mini-title">More in {article.category.name}</h2>
                 <div className="journal-compact-list">
                   {sidebar.map((a) => (

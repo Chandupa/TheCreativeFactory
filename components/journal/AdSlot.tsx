@@ -1,14 +1,29 @@
-import { adSlotId, adsenseClient, type AdPlacement } from "@/lib/journal/ads";
+import type { CSSProperties } from "react";
+import { ADS_ENABLED, ADSENSE_CLIENT, ADSENSE_SCRIPT_SRC, adUnitForSlot } from "@/lib/journal/ads";
 import AdUnit from "./AdUnit";
 
 /**
- * A Journal ad position. Renders nothing at all unless AdSense is configured
- * for this placement (see lib/journal/ads.ts), so there are never empty boxes.
- * When configured, the slot reserves its height up front (CSS per placement)
- * so a late-loading ad can't shift the page.
+ * One manual AdSense unit, e.g. <AdSlot slot={ARTICLE_TOP_SLOT} />.
+ * Renders nothing for unregistered slot ids or when ADS_ENABLED is false.
+ *
+ * The adsbygoogle.js <script async> is rendered alongside every unit, but React
+ * hoists async scripts into <head> and de-duplicates them by src — so the page
+ * gets exactly one copy, and only pages that show an ad load it at all.
  */
-export default function AdSlot({ placement }: { placement: AdPlacement }) {
-  const slot = adSlotId(placement);
-  if (!slot || !adsenseClient) return null;
-  return <AdUnit client={adsenseClient} slot={slot} placement={placement} />;
+export default function AdSlot({ slot }: { slot: string }) {
+  if (!ADS_ENABLED) return null;
+  const unit = adUnitForSlot(slot);
+  if (!unit) return null;
+
+  return (
+    <>
+      <script async src={ADSENSE_SCRIPT_SRC} crossOrigin="anonymous" />
+      <AdUnit
+        client={ADSENSE_CLIENT}
+        slot={unit.slot}
+        name={unit.name}
+        style={{ "--ad-reserve-mobile": `${unit.reserve.mobile}px`, "--ad-reserve-desktop": `${unit.reserve.desktop}px` } as CSSProperties}
+      />
+    </>
+  );
 }

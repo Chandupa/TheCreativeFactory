@@ -1,5 +1,4 @@
 import Link from "next/link";
-import AdSlot from "@/components/journal/AdSlot";
 import ArticleCard from "@/components/journal/ArticleCard";
 import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -140,10 +139,6 @@ export default async function JournalHomePage() {
           </div>
         ) : null}
       </section>
-
-      <div className="container">
-        <AdSlot placement="listing" />
-      </div>
 
       {news.length ? (
         <section className="container journal-section" aria-label="Latest news">

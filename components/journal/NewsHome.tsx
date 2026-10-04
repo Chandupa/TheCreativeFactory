@@ -3,7 +3,6 @@ import { RevealGroup } from "@/components/motion/Reveal";
 import { categoryPath, journalPath, type ArticleSummary, type Category } from "@/lib/journal/content";
 import { matchesSection, type CategoryPage } from "@/lib/journal/categoryPages";
 import { formatClock, formatShortDate, localDay } from "@/lib/journal/time";
-import AdSlot from "./AdSlot";
 import ArticleCard from "./ArticleCard";
 import { CategoryEnding, CategoryHero, CategorySection, EmptyCategory } from "./CategoryHome";
 import TimeAgo from "./TimeAgo";
@@ -125,10 +124,6 @@ export default function NewsHome({
             </ol>
           </CategorySection>
         ) : null}
-      </div>
-
-      <div className="container">
-        <AdSlot placement="listing" />
       </div>
 
       {sections.map(({ section, items }) => (

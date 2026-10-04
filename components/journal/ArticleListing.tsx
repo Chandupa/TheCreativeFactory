@@ -4,7 +4,6 @@ import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import SectionLabel from "@/components/ui/SectionLabel";
 import type { ArticleSummary, Page } from "@/lib/journal/content";
 import type { Crumb } from "@/lib/schema";
-import AdSlot from "./AdSlot";
 import ArticleCard from "./ArticleCard";
 import Pagination from "./Pagination";
 
@@ -59,8 +58,7 @@ export default function ArticleListing({ label, title, description, breadcrumbs,
             </RevealGroup>
             {rest.length ? (
               <>
-                <AdSlot placement="listing" />
-                <RevealGroup variant="card" className="journal-grid">
+                <RevealGroup variant="card" className="journal-grid journal-grid--continued">
                   {rest.map((article) => (
                     <ArticleCard key={article.slug} article={article} headingLevel={2} showExcerpt />
                   ))}

@@ -4,7 +4,6 @@ import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { categoryPath, JOURNAL_PAGE_SIZE, type ArticleSummary, type Category } from "@/lib/journal/content";
 import { matchesSection, type CategoryPage, type SectionLayout } from "@/lib/journal/categoryPages";
-import AdSlot from "./AdSlot";
 import ArticleCard from "./ArticleCard";
 
 /*
@@ -278,10 +277,6 @@ export default function CategoryHome({
         <TheEdit page={page} lead={lead} secondary={secondary} />
       </CategorySection>
 
-      <div className="container">
-        <AdSlot placement="listing" />
-      </div>
-
       {latest.length ? (
         <CategorySection index={next()} title={page.latestTitle}>
           <RevealGroup className="journal-grid journal-grid--4" variant="card">
@@ -292,16 +287,11 @@ export default function CategoryHome({
         </CategorySection>
       ) : null}
 
-      {sections.map(({ section, items }, i) => (
+      {sections.map(({ section, items }) => (
         <div key={section.title}>
           <CategorySection index={next()} title={section.title} description={section.description}>
             <SectionStories articles={items} layout={section.layout} />
           </CategorySection>
-          {i === 1 ? (
-            <div className="container">
-              <AdSlot placement="listing" />
-            </div>
-          ) : null}
         </div>
       ))}
 
@@ -324,9 +314,6 @@ export default function CategoryHome({
 
       {more.length ? (
         <>
-          <div className="container">
-            <AdSlot placement="listing" />
-          </div>
           <CategorySection
             index={next()}
             title="MORE STORIES"
