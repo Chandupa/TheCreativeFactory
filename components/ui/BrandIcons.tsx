@@ -60,3 +60,14 @@ export function TwitterIcon(props: IconProps) {
     </LucideSvg>
   );
 }
+
+/** X (formerly Twitter), drawn in the same stroke style as the Lucide icons above. */
+export function XIcon(props: IconProps) {
+  return (
+    <LucideSvg {...props}>
+      <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+      <path d="M4 20l6.768 -6.768" />
+      <path d="M13.232 10.768l6.768 -6.768" />
+    </LucideSvg>
+  );
+}

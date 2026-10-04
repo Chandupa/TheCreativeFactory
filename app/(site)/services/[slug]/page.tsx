@@ -9,7 +9,7 @@ import Faq from "@/components/ui/Faq";
 import PageIntro from "@/components/ui/PageIntro";
 import SectionLabel from "@/components/ui/SectionLabel";
 import RelatedProjects from "@/components/work/RelatedProjects";
-import { getInsightsForService, insightPath } from "@/content/insights";
+import { getArticlesForService, journalPath } from "@/lib/journal/content";
 import { getProjectsForService, projects } from "@/data/projects";
 import { getRelatedServices, getServiceBySlug, servicePath, services } from "@/data/services";
 import { buildMetadata } from "@/lib/seo";
@@ -21,6 +21,8 @@ interface ServicePageProps {
 }
 
 export const dynamicParams = false;
+// Re-check every 5 minutes so newly published (or scheduled) Journal articles appear under "Common questions".
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -42,7 +44,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   const path = servicePath(service.slug);
   const work = getProjectsForService(service.slug);
-  const articles = getInsightsForService(service.slug);
+  const articles = await getArticlesForService(service.slug);
 
   return (
     <>
@@ -142,7 +144,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <RevealGroup as="ul" variant="fade" className="inline-links">
               {articles.map((article) => (
                 <li key={article.slug}>
-                  <Link href={insightPath(article.slug)}>{article.title} →</Link>
+                  <Link href={journalPath(article.slug)}>{article.title} →</Link>
                 </li>
               ))}
             </RevealGroup>

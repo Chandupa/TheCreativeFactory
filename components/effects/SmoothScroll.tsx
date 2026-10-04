@@ -20,8 +20,11 @@ export function getLenis(): Lenis | null {
 export default function SmoothScroll() {
   const pathname = usePathname();
 
+  // The Journal CMS has its own scroll containers; leave native scrolling alone there.
+  const isAdmin = pathname.startsWith("/keystatic");
+
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || isAdmin) return;
 
     const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
     lenisInstance = lenis;
@@ -36,7 +39,7 @@ export default function SmoothScroll() {
       lenis.destroy();
       lenisInstance = null;
     };
-  }, []);
+  }, [isAdmin]);
 
   // New route: start at the top and let ScrollTrigger re-measure.
   useEffect(() => {

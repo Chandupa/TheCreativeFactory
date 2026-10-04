@@ -16,6 +16,10 @@ export interface PageSeo {
   modifiedTime?: string;
   /** Keep the page out of the index (links are still followed). */
   noindex?: boolean;
+  /** Absolute canonical URL when it isn't this page's own (e.g. content first published elsewhere). */
+  canonical?: string;
+  /** Open Graph article:section / article:tag / article:author. */
+  article?: { section?: string; tags?: string[]; authors?: string[] };
 }
 
 export const DEFAULT_OG_IMAGE = {
@@ -47,6 +51,8 @@ export function buildMetadata({
   publishedTime,
   modifiedTime,
   noindex = false,
+  canonical,
+  article,
 }: PageSeo): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${siteConfig.name}`;
   const ogImage = image ?? DEFAULT_OG_IMAGE;
@@ -55,7 +61,7 @@ export function buildMetadata({
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: canonical ?? url },
     openGraph: {
       type,
       url,
@@ -63,7 +69,7 @@ export function buildMetadata({
       title: fullTitle,
       description,
       images: [ogImage],
-      ...(type === "article" ? { publishedTime, modifiedTime } : {}),
+      ...(type === "article" ? { publishedTime, modifiedTime, ...article } : {}),
     },
     twitter: {
       card: "summary_large_image",

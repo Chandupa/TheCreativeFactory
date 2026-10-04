@@ -2,6 +2,8 @@
 @import "lenis/dist/lenis.css";
 @import "../styles/site.css";
 @import "../styles/pages.css";
+@import "../styles/journal.css";
+@import "../styles/journal-categories.css";
 
 /* Legacy HTML is kept for reference only — don't generate utilities from it. */
 @source not "../legacy";

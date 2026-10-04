@@ -158,29 +158,45 @@ export function videoObjectSchema(video: VideoSchemaInput): JsonLd | null {
   };
 }
 
+/**
+ * Article / NewsArticle for TCF Journal. NewsArticle only when the editor
+ * marked the piece as news. Publisher is inlined (name + url) as well as
+ * referenced, since Google reads each article page on its own.
+ */
 export function articleSchema(article: {
+  type: "article" | "news";
   title: string;
   description: string;
   path: string;
   publishedAt: string;
-  updatedAt?: string;
-  authorName: string;
-  image?: string;
+  updatedAt?: string | null;
+  author: { name: string; role?: string; url?: string | null };
+  images: string[];
+  section?: string;
+  tags?: string[];
 }): JsonLd {
+  const isFounder = article.author.name === founder.name;
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
+    "@type": article.type === "news" ? "NewsArticle" : "Article",
+    headline: article.title.length > 110 ? `${article.title.slice(0, 107)}…` : article.title,
     description: article.description,
-    mainEntityOfPage: absoluteUrl(article.path),
+    mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(article.path) },
+    url: absoluteUrl(article.path),
+    image: article.images.map((image) => absoluteUrl(image)),
     datePublished: article.publishedAt,
     dateModified: article.updatedAt ?? article.publishedAt,
-    author:
-      article.authorName === founder.name
-        ? { "@type": "Person", "@id": FOUNDER_ID, name: founder.name }
-        : { "@type": "Person", name: article.authorName },
-    publisher: organizationRef,
-    ...(article.image ? { image: absoluteUrl(article.image) } : {}),
+    author: {
+      "@type": "Person",
+      ...(isFounder ? { "@id": FOUNDER_ID } : {}),
+      name: article.author.name,
+      ...(article.author.role ? { jobTitle: article.author.role } : {}),
+      ...(article.author.url ? { url: article.author.url } : {}),
+    },
+    publisher: { "@type": "Organization", "@id": ORGANIZATION_ID, name: siteConfig.name, url: siteConfig.url },
+    ...(article.section ? { articleSection: article.section } : {}),
+    ...(article.tags?.length ? { keywords: article.tags.join(", ") } : {}),
+    inLanguage: "en",
   };
 }
 

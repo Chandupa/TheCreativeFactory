@@ -1,0 +1,606 @@
+/*
+ * TCF Journal editorial category homepages (components/journal/CategoryHome
+ * and NewsHome). One system, six temperaments: each category varies
+ * composition, scale and graphic treatment — never the brand colours.
+ */
+
+/* ---------- Hero ---------- */
+
+.jcat-hero {
+  position: relative;
+  padding: 48px 0 64px;
+}
+
+.jcat-index,
+.jcat-section-index {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.jcat-index span,
+.jcat-section-index {
+  color: var(--accent);
+}
+
+.jcat-index {
+  margin-bottom: 22px;
+}
+
+.jcat-title {
+  font-size: clamp(3rem, 10vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+.jcat-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: end;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.jcat-intro-lead {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.jcat-intro-secondary {
+  font-size: 17px;
+  line-height: 1.75;
+  color: #c9c9c9;
+}
+
+/* ---------- Sections ---------- */
+
+.jcat-section {
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+}
+
+.jcat-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.jcat-section-title {
+  margin-top: 10px;
+  font-size: clamp(1.7rem, 3.6vw, 2.8rem);
+  letter-spacing: -0.02em;
+}
+
+.jcat-section-desc {
+  max-width: 620px;
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #c9c9c9;
+}
+
+/* ---------- The edit: lead compositions ---------- */
+
+.jcat-edit--stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.jcat-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.jcat-stack .jcard--compact:first-child {
+  padding-top: 0;
+}
+
+.jcat-edit--banner .jcard--feature .jcard-media {
+  aspect-ratio: 21 / 9;
+}
+
+.jcat-edit--banner .jcard--feature .jcard-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 8px 48px;
+  padding-top: 28px;
+}
+
+.jcat-edit--banner .jcard--feature .jcard-kicker,
+.jcat-edit--banner .jcard--feature .jcard-title {
+  grid-column: 1;
+}
+
+.jcat-edit--banner .jcard--feature .jcard-excerpt,
+.jcat-edit--banner .jcard--feature .jcard-meta {
+  grid-column: 2;
+}
+
+.jcat-edit--banner .jcard--feature .jcard-excerpt {
+  grid-row: 1 / span 2;
+  margin-top: 0;
+}
+
+.jcat-edit--banner > .journal-grid,
+.jcat-edit--split > .journal-grid {
+  margin-top: 48px;
+}
+
+.jcat-edit--mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 32px 40px;
+}
+
+.jcat-edit--mosaic > .jcard--feature {
+  grid-row: 1 / span 2;
+}
+
+.jcat-edit--mosaic > .jcard--feature .jcard-media {
+  aspect-ratio: 4 / 5;
+}
+
+.jcat-edit--text {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+
+/* ---------- Feature + text cards ---------- */
+
+.jcard--feature .jcard-media {
+  border-radius: var(--radius-lg);
+}
+
+.jcard--feature .jcard-title {
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.jcard--feature .jcard-excerpt {
+  font-size: 17px;
+}
+
+.jcard--text {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.jcard--text .jcard-body {
+  padding-top: 0;
+}
+
+.jcard--text .jcard-title {
+  font-size: 1.35rem;
+}
+
+.jcard-author {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.jcat-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 48px;
+}
+
+.jcat-edit--text .jcat-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.jcat-edit--text .jcat-list .jcard--text:first-child {
+  padding-top: 0;
+}
+
+.jcat-duo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ---------- Popular (editor-selected), numbered ---------- */
+
+.jcat-popular {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 48px;
+  list-style: none;
+  counter-reset: popular;
+}
+
+.jcat-popular > li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: start;
+  counter-increment: popular;
+}
+
+.jcat-popular > li::before {
+  content: counter(popular, decimal-leading-zero);
+  padding-top: 18px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ---------- Closing line + CTA ---------- */
+
+.jcat-ending {
+  padding: 80px 0 112px;
+  border-top: 1px solid var(--border);
+}
+
+.jcat-ending-line {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.jcat-ending-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.jcat-ending-cta p {
+  font-size: 17px;
+  color: #c9c9c9;
+}
+
+/* ---------- Empty state ---------- */
+
+.jcat-empty {
+  padding: 56px 0 24px;
+  border-top: 1px solid var(--border);
+}
+
+.jcat-empty-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+.jcat-empty > p {
+  max-width: 620px;
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.jcat-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+  list-style: none;
+}
+
+.jcat-coverage li {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.jcat-coverage h3 {
+  margin: 12px 0 10px;
+  font-size: 1.15rem;
+}
+
+.jcat-coverage p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ---------- Personalities ---------- */
+
+/* AI — experimental: a faint measured grid behind the hero, glow at the edge. */
+.jcat--ai .jcat-hero {
+  isolation: isolate;
+}
+
+.jcat--ai .jcat-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(40% 70% at 85% 30%, rgba(var(--accent-rgb), 0.14), transparent 70%),
+    linear-gradient(rgba(var(--accent-rgb), 0.06) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.06) 1px, transparent 1px) 0 0 / 48px 48px;
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+  pointer-events: none;
+}
+
+/* Technology — precise: hairline rules, measured spacing. */
+.jcat--technology .jcat-title {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.jcat--technology .jcat-intro {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.jcat--technology .jcat-section-index::after {
+  content: " /";
+}
+
+/* Design — expressive: larger type and imagery, generous gaps. */
+.jcat--design .jcard-media {
+  border-radius: var(--radius-lg);
+}
+
+.jcat--design .journal-grid {
+  gap: 48px 32px;
+}
+
+.jcat--design .jcat-title {
+  font-size: clamp(3.6rem, 14vw, 12rem);
+}
+
+/* Marketing — bold: the lede sits in an accent block. */
+.jcat--marketing .jcat-title {
+  font-size: clamp(3.4rem, 13vw, 11rem);
+}
+
+.jcat--marketing .jcat-intro-lead {
+  padding: 22px 26px;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.jcat--marketing .jcat-ending-line .accent {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 0 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Business — authoritative: restrained scale, rules over boxes. */
+.jcat--business .jcat-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+}
+
+.jcat--business .jcat-intro-lead {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+}
+
+.jcat--business .jcard-media {
+  border-radius: var(--radius-md);
+}
+
+/* ---------- News: faster, denser ---------- */
+
+.jcat--news .jcat-hero {
+  padding-bottom: 36px;
+}
+
+.jcat--news .jcat-title {
+  font-size: clamp(3rem, 9vw, 7.5rem);
+}
+
+.jcat--news .jcat-section {
+  padding: 44px 0;
+}
+
+.jnews-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.jnews-beside {
+  display: flex;
+  flex-direction: column;
+}
+
+.jnews-item {
+  position: relative;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.jnews-beside .jnews-item:first-child {
+  padding-top: 0;
+}
+
+.jnews-item .jcard-kicker {
+  margin-bottom: 6px;
+}
+
+.jnews-item-title {
+  font-size: 1.08rem;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+
+.jnews-item-title a:hover {
+  color: var(--accent);
+}
+
+.jnews-time {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.jnews-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 0 40px;
+}
+
+/* Sections inside the two-column band use the band's width, not their own container width. */
+.jnews-columns > .jcat-section {
+  width: auto;
+  margin-inline: 0;
+}
+
+.jnews-columns:not(:has(.jnews-popular-section)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.jnews-popular-section .jcat-popular {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.jnews-day + .jnews-day {
+  margin-top: 28px;
+}
+
+.jnews-day-label {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.jnews-feed ol {
+  list-style: none;
+}
+
+.jnews-feed li {
+  display: grid;
+  grid-template-columns: 64px 120px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.jnews-clock {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text);
+}
+
+.jnews-feed-category {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.jnews-feed-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.jnews-feed-title:hover {
+  color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .jcat-intro,
+  .jcat-edit--stack,
+  .jcat-edit--text,
+  .jnews-top,
+  .jnews-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .jcat-edit--mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jcat-edit--mosaic > .jcard--feature {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .jcat-edit--mosaic > .jcard--feature .jcard-media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .jcat-coverage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .jcat-hero {
+    padding: 32px 0 44px;
+  }
+
+  .jcat-section {
+    padding: 44px 0;
+  }
+
+  .jcat-section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .jcat-edit--banner .jcard--feature .jcard-media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .jcat-edit--banner .jcard--feature .jcard-body {
+    display: block;
+  }
+
+  .jcat-edit--banner .jcard--feature .jcard-excerpt {
+    margin-top: 12px;
+  }
+
+  .jcat-list,
+  .jcat-popular,
+  .jcat-duo,
+  .jcat-coverage,
+  .jcat-edit--mosaic {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jcat-ending {
+    padding: 56px 0 80px;
+  }
+
+  .jnews-feed li {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 4px 12px;
+  }
+
+  .jnews-feed-category {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .jnews-feed-title {
+    grid-column: 2;
+  }
+}

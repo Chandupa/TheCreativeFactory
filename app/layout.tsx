@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   },
   other: {
     "dmca-site-verification": dmca.verification,
+    // Google AdSense site ownership verification (ads run only on /journal; see lib/journal/ads.ts).
+    "google-adsense-account": "ca-pub-6750982414798216",
   },
 };
 

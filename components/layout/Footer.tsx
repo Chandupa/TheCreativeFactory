@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { insights } from "@/content/insights";
 import { contactInfo, footerLinks, siteConfig, socialLinks } from "@/data/site";
 import { servicePath, services } from "@/data/services";
 import CurrentYear from "@/components/ui/CurrentYear";
@@ -9,10 +8,6 @@ import FooterBrandMark from "./FooterBrandMark";
 import Logo from "./Logo";
 import { Reveal, RevealGroup } from "@/components/motion/Reveal";
 
-// Insights joins the footer once there is something published to link to.
-const quickLinks = insights.length
-  ? [...footerLinks.slice(0, 4), { label: "Insights", href: "/insights" }, ...footerLinks.slice(4)]
-  : footerLinks;
 
 export default function Footer() {
   return (
@@ -49,7 +44,7 @@ export default function Footer() {
         <nav className="footer-section" aria-labelledby="footer-links">
           <h2 id="footer-links">Quick Links</h2>
           <ul>
-            {quickLinks.map((link) => (
+            {footerLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href}>{link.label}</Link>
               </li>

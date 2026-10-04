@@ -682,41 +682,7 @@
   border-radius: var(--radius-md);
 }
 
-/* ---------- Insights ---------- */
-
-.article-list {
-  display: grid;
-  gap: 24px;
-  list-style: none;
-}
-
-.article-item {
-  padding: 40px 48px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-
-.article-item h2 {
-  margin-bottom: 14px;
-  font-size: clamp(1.4rem, 2.6vw, 2rem);
-}
-
-.article-item h2 a:hover {
-  color: var(--accent);
-}
-
-.article-item > p:not([class]) {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #c9c9c9;
-}
-
-.page-intro-lead .article-byline {
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
+/* ---------- Long-form text (Journal article bodies) ---------- */
 
 .prose {
   font-size: 17px;
@@ -756,12 +722,6 @@
 
 .prose strong {
   color: var(--text);
-}
-
-.article-next {
-  margin-top: 56px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
 }
 
 /* ---------- Responsive ---------- */
@@ -808,8 +768,7 @@
     padding-top: 56px;
   }
 
-  .service-hub-item,
-  .article-item {
+  .service-hub-item {
     padding: 32px 22px;
   }
 

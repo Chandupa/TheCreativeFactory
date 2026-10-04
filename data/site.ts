@@ -56,6 +56,7 @@ export const mainNav: NavItem[] = [
   { label: "HOME", href: "/" },
   { label: "OUR WORK", href: "/work" },
   { label: "SERVICES", href: "/services" },
+  { label: "JOURNAL", href: "/journal" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT US", href: "/contact" },
 ];
@@ -64,6 +65,7 @@ export const footerLinks: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Our Work", href: "/work" },
   { label: "Services", href: "/services" },
+  { label: "TCF Journal", href: "/journal" },
   { label: "About", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   { label: "Copyright", href: "/copyright" },
