@@ -69,6 +69,7 @@ export const footerLinks: NavItem[] = [
   { label: "About", href: "/about" },
   { label: "Contact Us", href: "/contact" },
   { label: "Copyright", href: "/copyright" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
 ];
 
 // From the legacy About page (Twitter pointed at twitter.com itself, so it's omitted).

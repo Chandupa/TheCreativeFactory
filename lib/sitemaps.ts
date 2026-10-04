@@ -26,6 +26,7 @@ export function pagesSitemap(): SitemapUrl[] {
     { loc: absoluteUrl("/about") },
     { loc: absoluteUrl("/contact") },
     { loc: absoluteUrl("/copyright") },
+    { loc: absoluteUrl("/privacy-policy") },
   ];
   if (projects.length) {
     urls.push({ loc: absoluteUrl("/work") }, ...projects.map((p) => ({ loc: absoluteUrl(projectPath(p.slug)) })));
