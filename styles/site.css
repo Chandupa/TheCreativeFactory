@@ -18,8 +18,16 @@
   --text: #ffffff;
   --muted: #ababab;
   --accent: #cbfe1c;
+  /* Solid lime surfaces (buttons, pills, flags). Equal to --accent in dark mode;
+     in light mode --accent darkens for legible text while fills stay lime. */
+  --accent-fill: #cbfe1c;
   --accent-rgb: 203, 254, 28;
   --accent-ink: #0b0e13;
+  /* Page colour as RGB, for translucent header/overlay/badge backgrounds. */
+  --bg-rgb: 11, 14, 19;
+  /* Secondary copy and long-form reading text. */
+  --text-soft: #c9c9c9;
+  --text-body: #d0d0d0;
   --radius-lg: 32px;
   --radius-md: 20px;
   --header-h: 90px;
@@ -44,6 +52,47 @@ body:has(.site) {
   cursor: default;
 }
 
+/* ---------- Light theme ----------
+   Dark is the default. <html data-theme="light"> (set before first paint by the
+   script in app/layout.tsx, toggled by components/layout/ThemeToggle.tsx)
+   swaps the tokens; every component reads tokens, so nothing else changes. */
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="light"] .site {
+  --bg: #f6f6f2;
+  --bg-rgb: 246, 246, 242;
+  --surface: #ffffff;
+  --surface-2: #ecece6;
+  --border: rgba(11, 14, 19, 0.1);
+  --border-strong: rgba(11, 14, 19, 0.2);
+  --text: #0b0e13;
+  --text-soft: #3b4048;
+  --text-body: #2b2f36;
+  --muted: #5a6068;
+  /* Lime is ~1.2:1 on white, so text/lines use a deep olive-lime (5:1 on --bg). */
+  --accent: #4f7300;
+  --accent-fill: #cbfe1c;
+  --accent-ink: #0b0e13;
+}
+
+:root[data-theme="light"] body:has(.site) {
+  background-color: #f6f6f2;
+}
+
+/* Particles are drawn in lime by WebGL; deepen them slightly so they read on
+   light, and keep them faint so they stay a texture rather than dark spots. */
+:root[data-theme="light"] .three-canvas {
+  filter: brightness(0.75) saturate(1.3);
+  opacity: 0.4;
+}
+
 .site :where(h1, h2, h3, h4) {
   font-family: var(--font-display);
   font-weight: 400;
@@ -59,7 +108,7 @@ body:has(.site) {
 }
 
 .site ::selection {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
 }
 
@@ -150,13 +199,15 @@ body:has(.site) {
 }
 
 .btn--primary {
-  background: var(--accent);
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
   color: var(--accent-ink);
 }
 
 .btn--primary:hover,
 .btn--primary:focus-visible {
   background: transparent;
+  border-color: var(--accent);
   color: var(--accent);
   box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.25);
 }
@@ -168,7 +219,8 @@ body:has(.site) {
 
 .btn--outline:hover,
 .btn--outline:focus-visible {
-  background: var(--accent);
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
   color: var(--accent-ink);
 }
 
@@ -254,7 +306,7 @@ body:has(.site) {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 24px;
-  background: rgba(11, 14, 19, 0.82);
+  background: rgba(var(--bg-rgb), 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
@@ -328,6 +380,31 @@ body:has(.site) {
   font-size: 14px;
 }
 
+.header-journal[aria-current="page"] {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+  color: var(--accent-ink);
+}
+
+.theme-toggle {
+  width: 48px;
+  height: 48px;
+}
+
+/* The header's right column shrinks around the centred logo: drop the extra
+   links before they crowd it (both stay in the menu at every width). */
+@media (max-width: 1180px) {
+  .header-journal {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .header-talk {
+    display: none;
+  }
+}
+
 /* Full-screen navigation overlay */
 .nav-overlay {
   position: fixed;
@@ -339,7 +416,7 @@ body:has(.site) {
   padding: 120px 8vw 60px;
   background:
     radial-gradient(60% 60% at 90% 10%, rgba(var(--accent-rgb), 0.08), transparent 70%),
-    rgba(11, 14, 19, 0.98);
+    rgba(var(--bg-rgb), 0.98);
   clip-path: circle(0 at calc(100% - 52px) 45px);
   visibility: hidden;
   transition:
@@ -460,7 +537,7 @@ body:has(.site) {
   padding: 8px 14px;
   border: 1px dashed var(--accent);
   border-radius: 8px;
-  background: rgba(11, 14, 19, 0.8);
+  background: rgba(var(--bg-rgb), 0.8);
   color: var(--accent);
   font-size: 12px;
   font-weight: 700;
@@ -473,7 +550,7 @@ body:has(.site) {
   z-index: 1;
   background:
     radial-gradient(45% 55% at 85% 55%, rgba(var(--accent-rgb), 0.16), transparent 70%),
-    linear-gradient(180deg, rgba(11, 14, 19, 0.7) 0%, rgba(11, 14, 19, 0.25) 45%, var(--bg) 100%);
+    linear-gradient(180deg, rgba(var(--bg-rgb), 0.7) 0%, rgba(var(--bg-rgb), 0.25) 45%, var(--bg) 100%);
 }
 
 .hero-inner {
@@ -622,7 +699,7 @@ body:has(.site) {
   padding: 18px 22px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  background: rgba(11, 14, 19, 0.75);
+  background: rgba(var(--bg-rgb), 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -725,7 +802,7 @@ body:has(.site) {
 .bio-copy p {
   font-size: 17px;
   line-height: 1.9;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .bio-copy p + p {
@@ -806,7 +883,7 @@ body:has(.site) {
 
 .contact-card:hover {
   transform: translateY(-6px);
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 
@@ -948,7 +1025,7 @@ body:has(.site) {
 .service-card:hover,
 .service-card:focus-visible {
   transform: translateY(-8px);
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 
@@ -1174,7 +1251,7 @@ body:has(.site) {
   bottom: 0;
   width: 40px;
   height: 2px;
-  background: var(--accent);
+  background: var(--accent-fill);
 }
 
 .footer-section ul {
@@ -1238,7 +1315,7 @@ body:has(.site) {
   display: grid;
   place-items: center;
   border: none;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-size: 18px;
   cursor: pointer;
@@ -1345,7 +1422,7 @@ body:has(.site) {
   margin-bottom: 20px;
   font-size: 16px;
   line-height: 1.85;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .page-card p:last-child {

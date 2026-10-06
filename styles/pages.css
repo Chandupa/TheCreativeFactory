@@ -13,7 +13,7 @@
   z-index: 10001;
   padding: 12px 22px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -139,7 +139,7 @@
   margin-top: 24px;
   font-size: 17px;
   line-height: 1.85;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .page-intro .hero-actions {
@@ -222,7 +222,7 @@
 .detail-card p {
   font-size: 15px;
   line-height: 1.8;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 /* ---------- Process ---------- */
@@ -304,7 +304,7 @@
   left: 50%;
   width: 12px;
   height: 2px;
-  background: var(--accent);
+  background: var(--accent-fill);
   transform: translate(-50%, -50%);
   transition: transform 0.3s ease;
 }
@@ -322,7 +322,7 @@
   padding-bottom: 28px;
   font-size: 16px;
   line-height: 1.85;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 /* ---------- Related services ---------- */
@@ -374,7 +374,7 @@
 .related-card:hover,
 .related-card:focus-visible {
   transform: translateY(-6px);
-  background: var(--accent);
+  background: var(--accent-fill);
   border-color: var(--accent);
 }
 
@@ -443,7 +443,7 @@
   margin-bottom: 22px;
   font-size: 16px;
   line-height: 1.8;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 /* ---------- Work ---------- */
@@ -506,7 +506,7 @@
 .project-card-summary {
   font-size: 15px;
   line-height: 1.75;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .project-card-tags {
@@ -557,7 +557,7 @@
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-fill);
   box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.35);
   transition: transform 0.3s ease;
 }
@@ -645,7 +645,7 @@
   max-width: 760px;
   font-size: 17px;
   line-height: 1.9;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .case-section p + p {
@@ -687,7 +687,7 @@
 .prose {
   font-size: 17px;
   line-height: 1.9;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .prose h2 {
@@ -778,7 +778,7 @@
 .policy-toc a {
   display: block;
   padding: 4px 0;
-  color: #c9c9c9;
+  color: var(--text-soft);
   transition: color 0.2s ease;
 }
 
@@ -791,7 +791,7 @@
   max-width: 760px;
   font-size: 17px;
   line-height: 1.8;
-  color: #d0d0d0;
+  color: var(--text-body);
 }
 
 .policy-intro p + p,

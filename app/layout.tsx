@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import SmoothScroll from "@/components/effects/SmoothScroll";
+import { THEME_COLOR, THEME_STORAGE_KEY } from "@/lib/theme";
 import { dmca, siteConfig } from "@/data/site";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 import "./globals.css";
@@ -42,14 +43,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b0e13",
+  themeColor: THEME_COLOR.dark,
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
+// Runs before first paint: applies a saved light-mode choice so the page never
+// flashes dark first. Dark is the default (no attribute change needed).
+const themeScript = `try{if(localStorage.getItem("${THEME_STORAGE_KEY}")==="light"){document.documentElement.dataset.theme="light";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","${THEME_COLOR.light}")}}catch(e){}`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: data-theme may be changed by themeScript before React hydrates.
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <SmoothScroll />
         {children}

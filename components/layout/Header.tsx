@@ -7,6 +7,7 @@ import { contactInfo, mainNav, socialLinks } from "@/data/site";
 import Icon from "@/components/ui/Icon";
 import SocialIcon from "@/components/ui/SocialIcon";
 import Logo from "./Logo";
+import ThemeToggle from "./ThemeToggle";
 
 /**
  * Socials left, logo centre, actions right; the menu button opens a
@@ -75,9 +76,17 @@ export default function Header() {
         <Logo />
 
         <div className="header-actions">
-          <Link href="/contact" className="btn btn--outline header-cta">
+          <Link
+            href="/journal"
+            className="btn btn--outline header-cta header-journal"
+            aria-current={pathname === "/journal" || pathname.startsWith("/journal/") ? "page" : undefined}
+          >
+            TCF JOURNAL
+          </Link>
+          <Link href="/contact" className="btn btn--outline header-cta header-talk">
             LET&apos;S TALK
           </Link>
+          <ThemeToggle />
           <button
             ref={openButtonRef}
             type="button"

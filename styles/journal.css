@@ -15,7 +15,7 @@
   position: sticky;
   top: var(--header-h);
   z-index: 900;
-  background: rgba(11, 14, 19, 0.88);
+  background: rgba(var(--bg-rgb), 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
@@ -73,7 +73,7 @@
 .journal-nav-links a[aria-current="page"],
 .journal-nav-search[aria-current="page"] {
   color: var(--accent-ink);
-  background: var(--accent);
+  background: var(--accent-fill);
 }
 
 .journal-nav-search {
@@ -103,7 +103,7 @@
   margin-top: 22px;
   font-size: 17px;
   line-height: 1.7;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .journal-listing-head {
@@ -121,7 +121,7 @@
   margin-top: 18px;
   font-size: 17px;
   line-height: 1.7;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .journal-listing-count {
@@ -203,7 +203,7 @@
   flex: none;
   padding: 3px 9px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-size: 11px;
   font-weight: 700;
@@ -342,7 +342,7 @@
   margin-top: 12px;
   font-size: 15px;
   line-height: 1.7;
-  color: #c9c9c9;
+  color: var(--text-soft);
 }
 
 .jcard-meta {
@@ -511,7 +511,7 @@
 
 .journal-pagination ol span[aria-current] {
   border-color: var(--accent);
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
 }
 
@@ -561,7 +561,7 @@
 
 .jarticle-preview {
   padding: 12px 24px;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-weight: 700;
   text-align: center;
@@ -605,7 +605,7 @@
   margin-top: 22px;
   font-size: clamp(18px, 2vw, 21px);
   line-height: 1.6;
-  color: #d6d6d6;
+  color: var(--text-body);
 }
 
 .jarticle-byline {
@@ -682,7 +682,7 @@
 .article-body {
   font-size: 18px;
   line-height: 1.8;
-  color: #d0d0d0;
+  color: var(--text-body);
 }
 
 .article-body > * + * {
