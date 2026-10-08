@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hero";
 import AboutIntro from "@/components/home/AboutIntro";
 import Services from "@/components/home/Services";
 import Clients from "@/components/home/Clients";
+import Reviews from "@/components/home/Reviews";
 import CTA from "@/components/home/CTA";
 import JsonLd from "@/components/seo/JsonLd";
 import { services, toSummary, typingPhrase } from "@/data/services";
@@ -27,6 +28,7 @@ export default function HomePage() {
       <AboutIntro />
       <Services services={serviceSummaries} />
       <Clients />
+      <Reviews />
       <CTA />
     </>
   );

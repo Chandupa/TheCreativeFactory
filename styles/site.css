@@ -1128,6 +1128,124 @@ body:has(.site) {
   white-space: nowrap;
 }
 
+/* ---------- Reviews (components/home/Reviews) ---------- */
+
+.reviews-section {
+  padding-top: 40px;
+}
+
+.reviews-summary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-top: 22px;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.reviews-summary strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* Masonry columns: reviews vary a lot in length, so cards flow top-to-bottom. */
+.reviews-grid {
+  columns: 3;
+  column-gap: 24px;
+  list-style: none;
+}
+
+.review-card {
+  break-inside: avoid;
+  margin-bottom: 24px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  transition: border-color 0.3s ease;
+}
+
+.review-card:hover {
+  border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+.review-stars {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.review-stars svg {
+  fill: var(--border-strong);
+}
+
+/* Accent: lime in dark mode, olive in light (lime stars wash out on white). */
+.review-stars svg[data-filled="true"] {
+  fill: var(--accent);
+}
+
+.review-stars--summary svg {
+  width: 20px;
+  height: 20px;
+}
+
+.review-card blockquote {
+  margin: 18px 0 22px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-soft);
+}
+
+.review-card blockquote p + p {
+  margin-top: 12px;
+}
+
+.review-card figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.review-author {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text);
+}
+
+.review-source {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.reviews-cta {
+  margin-top: 24px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .reviews-grid {
+    columns: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .reviews-grid {
+    columns: 1;
+  }
+
+  .review-card {
+    padding: 24px 22px;
+  }
+}
+
 /* ---------- CTA ---------- */
 
 .cta-section {
