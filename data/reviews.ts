@@ -4,9 +4,7 @@
  * Google, typos included. Captured 8 October 2026 from the business profile
  * (5.0 average from 6 reviews, so every rating is 5 stars). Owner replies and
  * Google's relative dates ("2 years ago") are deliberately not reproduced.
- *
- * Order is editorial only: the two identical one-line reviews are kept apart
- * so they don't sit side by side in the masonry layout.
+ * One review (nalaka chaminda) is omitted at the owner's request.
  *
  * To update: copy new reviews from the profile and add them here.
  */
@@ -24,11 +22,6 @@ export const reviews: Review[] = [
     author: "Onella Mudalige",
     rating: 5,
     text: "We recently worked with him for our company profile video and honestly, he did an amazing job. From start to finish he was calm, professional and easy to work with. I requested quite a few revisions along the way and he was always patient and ready to make the changes without any hesitation.\n\nWe’re very happy with how our corporate video turned out. Highly recommend him if you’re looking for someone reliable and talented!",
-  },
-  {
-    author: "nalaka chaminda",
-    rating: 5,
-    text: "A true professional who knows how to make a visual impact!",
   },
   {
     author: "Himesh De Ruberu",
@@ -52,8 +45,8 @@ export const reviews: Review[] = [
   },
 ];
 
-/** Average rating and count, as displayed on the profile. */
-export const reviewSummary = {
-  average: reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length,
-  count: reviews.length,
-};
+/**
+ * Rating and count as shown on the Google profile (not derived from the list
+ * above, since not every review is displayed). Update when the profile changes.
+ */
+export const reviewSummary = { average: 5.0, count: 6 };
