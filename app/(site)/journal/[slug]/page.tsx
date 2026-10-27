@@ -7,7 +7,6 @@ import ArticleCard from "@/components/journal/ArticleCard";
 import ArticleTracking from "@/components/journal/ArticleTracking";
 import ShareBar from "@/components/journal/ShareBar";
 import TrackedLink from "@/components/journal/TrackedLink";
-import { RevealGroup } from "@/components/motion/Reveal";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLd from "@/components/seo/JsonLd";
 import { getServiceBySlug, servicePath } from "@/data/services";
@@ -127,7 +126,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <Image src={article.author.avatar} alt="" width={44} height={44} className="jarticle-avatar" />
             ) : null}
             <div>
-              <p className="jarticle-author">By {article.author.name}</p>
+              <p className="jarticle-author">
+                By <span>{article.author.name}</span>
+              </p>
               <p className="jarticle-dates">
                 <time dateTime={article.publishedAt}>{formatLongDate(article.publishedAt)}</time>
                 {updated ? (
@@ -219,12 +220,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {sidebar.length ? (
             <aside className="jarticle-aside" aria-label={`More in ${article.category.name}`}>
               <div className="jarticle-aside-sticky">
-                <h2 className="journal-mini-title">More in {article.category.name}</h2>
-                <div className="journal-compact-list">
+                <h2 className="jrail-title">More in {article.category.name}</h2>
+                <ol className="jrail-list">
                   {sidebar.map((a) => (
-                    <ArticleCard key={a.slug} article={a} variant="compact" />
+                    <li key={a.slug}>
+                      <ArticleCard article={a} variant="compact" />
+                    </li>
                   ))}
-                </div>
+                </ol>
               </div>
             </aside>
           ) : null}
@@ -232,28 +235,32 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </article>
 
       {related.length ? (
-        <section className="container journal-section" aria-labelledby="related-title">
-          <h2 className="journal-section-title" id="related-title">
-            Related articles
-          </h2>
-          <RevealGroup variant="card" className="journal-grid">
+        <section className="container jsection" aria-labelledby="related-title">
+          <div className="jsection-head">
+            <h2 className="jsection-title" id="related-title">
+              Related articles
+            </h2>
+          </div>
+          <div className="journal-grid">
             {related.map((a) => (
               <ArticleCard key={a.slug} article={a} />
             ))}
-          </RevealGroup>
+          </div>
         </section>
       ) : null}
 
       {more.length ? (
-        <section className="container journal-section" aria-labelledby="more-title">
-          <h2 className="journal-section-title" id="more-title">
-            More from TCF Journal
-          </h2>
-          <RevealGroup variant="card" className="journal-grid">
+        <section className="container jsection" aria-labelledby="more-title">
+          <div className="jsection-head">
+            <h2 className="jsection-title" id="more-title">
+              More from TCF Journal
+            </h2>
+          </div>
+          <div className="jriver">
             {more.map((a) => (
-              <ArticleCard key={a.slug} article={a} />
+              <ArticleCard key={a.slug} article={a} variant="river" />
             ))}
-          </RevealGroup>
+          </div>
         </section>
       ) : null}
     </>

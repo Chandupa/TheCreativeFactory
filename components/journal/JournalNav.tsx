@@ -9,8 +9,8 @@ interface JournalNavProps {
 }
 
 /**
- * Journal section bar under the site header: masthead link, Latest, the
- * categories marked "Show in Journal navigation", and search. On narrow
+ * Journal section bar under the site header: the TCF JOURNAL wordmark, Latest,
+ * the categories marked "Show in Journal navigation", and search. On narrow
  * screens the links scroll sideways inside the bar (never the page).
  */
 export default function JournalNav({ categories }: JournalNavProps) {
@@ -26,7 +26,8 @@ export default function JournalNav({ categories }: JournalNavProps) {
     <nav className="journal-nav" aria-label="Journal">
       <div className="container journal-nav-inner">
         <Link href="/journal" className="journal-nav-brand" aria-current={pathname === "/journal" ? "page" : undefined}>
-          TCF <span className="accent">JOURNAL</span>
+          <span className="journal-mark">TCF</span>
+          <span>JOURNAL</span>
         </Link>
         <ul className="journal-nav-links" data-lenis-prevent>
           {links.map((link) => (

@@ -7,9 +7,10 @@ interface ArticleCardProps {
   article: ArticleSummary;
   /**
    * lead = big story, image beside copy · feature = big image above, large headline
-   * standard = image above · compact = small text row · text = headline-led, no image
+   * standard = image above · river = archive row, small image beside copy
+   * compact = small text row · text = headline-led, no image
    */
-  variant?: "lead" | "feature" | "standard" | "compact" | "text";
+  variant?: "lead" | "feature" | "standard" | "river" | "compact" | "text";
   headingLevel?: 2 | 3;
   showExcerpt?: boolean;
   showAuthor?: boolean;
@@ -21,14 +22,15 @@ const SIZES = {
   lead: "(min-width: 1024px) 60vw, 100vw",
   feature: "(min-width: 1024px) 60vw, 100vw",
   standard: "(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw",
+  river: "(min-width: 768px) 320px, 35vw",
 } as const;
 
 export default function ArticleCard({
   article,
   variant = "standard",
   headingLevel = 3,
-  showExcerpt = variant === "lead" || variant === "feature" || variant === "text",
-  showAuthor = false,
+  showExcerpt = variant === "lead" || variant === "feature" || variant === "text" || variant === "river",
+  showAuthor = variant !== "compact",
   priority = false,
 }: ArticleCardProps) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
@@ -59,15 +61,8 @@ export default function ArticleCard({
         </Heading>
         {showExcerpt ? <p className="jcard-excerpt">{article.excerpt}</p> : null}
         <p className="jcard-meta">
-          {showAuthor ? (
-            <>
-              <span className="jcard-author">{article.author.name}</span>
-              <span aria-hidden="true"> · </span>
-            </>
-          ) : null}
+          {showAuthor ? <span className="jcard-author">By {article.author.name}</span> : null}
           <time dateTime={article.publishedAt}>{formatShortDate(article.publishedAt)}</time>
-          <span aria-hidden="true"> · </span>
-          {article.readingMinutes} min read
         </p>
       </div>
     </article>

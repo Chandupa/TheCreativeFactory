@@ -1,7 +1,5 @@
 import Link from "next/link";
 import ArticleCard from "@/components/journal/ArticleCard";
-import { RevealGroup, RevealText } from "@/components/motion/Reveal";
-import SectionLabel from "@/components/ui/SectionLabel";
 import SocialIcon from "@/components/ui/SocialIcon";
 import { socialLinks } from "@/data/site";
 import {
@@ -40,30 +38,39 @@ function take(pool: ArticleSummary[], used: Set<string>, count: number, filter: 
 
 function Masthead() {
   return (
-    <header className="journal-masthead container">
-      <RevealText as="h1" display className="journal-masthead-title">
-        TCF <span className="accent">JOURNAL</span>
-      </RevealText>
-      <p className="journal-masthead-lede" data-reveal="copy">
-        Stories, news and guides on creativity, technology and business — from The Creative Factory.
-      </p>
+    <header className="container jhome-masthead">
+      <h1 className="jhome-title">
+        <span className="journal-mark">TCF</span> JOURNAL
+      </h1>
+      <p className="jhome-lede">Stories, news and guides on creativity, technology and business — from The Creative Factory.</p>
     </header>
   );
 }
 
-function SectionHeader({ label, title, href, linkText }: { label: string; title: string; href?: string; linkText?: string }) {
+function SectionHeader({ title, href, linkText }: { title: string; href?: string; linkText?: string }) {
   return (
-    <div className="journal-section-head">
-      <div>
-        <SectionLabel>{label}</SectionLabel>
-        <RevealText className="journal-section-title">{title}</RevealText>
-      </div>
+    <div className="jsection-head">
+      <h2 className="jsection-title">{title}</h2>
       {href ? (
-        <Link href={href} className="journal-section-link">
+        <Link href={href} className="jsection-link">
           {linkText ?? "View all"} →
         </Link>
       ) : null}
     </div>
+  );
+}
+
+function FollowLinks() {
+  return (
+    <ul className="journal-follow-links">
+      {socialLinks.map((social) => (
+        <li key={social.label}>
+          <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label}>
+            <SocialIcon name={social.icon} />
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -80,15 +87,7 @@ export default async function JournalHomePage() {
             TCF Journal will cover creative work, design, AI, technology, marketing and the business of creativity. Follow
             The Creative Factory to catch the first articles.
           </p>
-          <ul className="journal-follow-links">
-            {socialLinks.map((social) => (
-              <li key={social.label}>
-                <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label}>
-                  <SocialIcon name={social.icon} />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <FollowLinks />
         </section>
       </>
     );
@@ -98,7 +97,8 @@ export default async function JournalHomePage() {
   const breaking = articles.find((a) => a.breakingNews);
   // Lead: the newest article marked Featured, else simply the newest.
   const lead = take(articles, used, 1, (a) => a.featured)[0] ?? take(articles, used, 1)[0];
-  const latest = take(articles, used, 4);
+  const side = take(articles, used, 2);
+  const latest = take(articles, used, 5);
   const news = take(articles, used, 4, (a) => a.category.slug === "news" || a.articleType === "news");
   const picks = take(articles, used, 3, (a) => a.editorPick);
   const categorySections = navCategories
@@ -122,18 +122,29 @@ export default async function JournalHomePage() {
         </div>
       ) : null}
 
-      {/* Lead story + latest headlines */}
-      <section className="container journal-top" aria-label="Top stories">
-        <ArticleCard article={lead} variant="lead" headingLevel={2} priority />
+      {/* Top stories: secondary column · lead story · latest headlines */}
+      <section className="container jhero" aria-label="Top stories">
+        <div className="jhero-lead">
+          <ArticleCard article={lead} variant="feature" headingLevel={2} priority />
+        </div>
+        {side.length ? (
+          <div className="jhero-side">
+            {side.map((article) => (
+              <ArticleCard key={article.slug} article={article} />
+            ))}
+          </div>
+        ) : null}
         {latest.length ? (
-          <div className="journal-top-latest">
-            <h2 className="journal-mini-title">Latest</h2>
-            <RevealGroup className="journal-compact-list" variant="copy">
+          <div className="jhero-latest">
+            <h2 className="jrail-title">Latest</h2>
+            <ol className="jrail-list">
               {latest.map((article) => (
-                <ArticleCard key={article.slug} article={article} variant="compact" />
+                <li key={article.slug}>
+                  <ArticleCard article={article} variant="compact" showAuthor />
+                </li>
               ))}
-            </RevealGroup>
-            <Link href={latestPath()} className="journal-section-link">
+            </ol>
+            <Link href={latestPath()} className="jsection-link">
               All stories →
             </Link>
           </div>
@@ -141,46 +152,51 @@ export default async function JournalHomePage() {
       </section>
 
       {news.length ? (
-        <section className="container journal-section" aria-label="Latest news">
-          <SectionHeader label="NEWS" title="Latest news" href={categoryPath("news")} />
-          <RevealGroup variant="card" className="journal-grid journal-grid--4">
+        <section className="container jsection" aria-label="Latest news">
+          <SectionHeader title="News" href={categoryPath("news")} />
+          <div className="journal-grid journal-grid--4">
             {news.map((article) => (
               <ArticleCard key={article.slug} article={article} />
             ))}
-          </RevealGroup>
+          </div>
         </section>
       ) : null}
 
       {picks.length ? (
-        <section className="container journal-section" aria-label="Editor's picks">
-          <SectionHeader label="EDITOR'S PICKS" title="Worth your time" />
-          <RevealGroup variant="card" className="journal-grid">
-            {picks.map((article) => (
-              <ArticleCard key={article.slug} article={article} showExcerpt />
-            ))}
-          </RevealGroup>
+        <section className="jband" aria-label="Editor's picks">
+          <div className="container">
+            <SectionHeader title="Editor's picks" />
+            <ArticleCard article={picks[0]} variant="lead" />
+            {picks.length > 1 ? (
+              <div className="journal-grid jband-grid">
+                {picks.slice(1).map((article) => (
+                  <ArticleCard key={article.slug} article={article} showExcerpt />
+                ))}
+              </div>
+            ) : null}
+          </div>
         </section>
       ) : null}
 
       {categorySections.map(({ category, items }) => (
-        <section key={category.slug} className="container journal-section" aria-label={category.name}>
-          <SectionHeader label="CATEGORY" title={category.name} href={categoryPath(category.slug)} linkText={`More ${category.name}`} />
-          <RevealGroup variant="card" className="journal-grid">
+        <section key={category.slug} className="container jsection" aria-label={category.name}>
+          <SectionHeader title={category.name} href={categoryPath(category.slug)} linkText={`More ${category.name}`} />
+          <div className="journal-grid">
             {items.map((article) => (
               <ArticleCard key={article.slug} article={article} />
             ))}
-          </RevealGroup>
+          </div>
         </section>
       ))}
 
       {recent.length ? (
-        <section className="container journal-section" aria-label="Recent articles">
-          <SectionHeader label="RECENT" title="More from the Journal" href={latestPath()} linkText="All stories" />
-          <RevealGroup variant="card" className="journal-grid">
+        <section className="container jsection" aria-label="Recent articles">
+          <SectionHeader title="More stories" href={latestPath()} linkText="All stories" />
+          <div className="jriver">
             {recent.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
+              <ArticleCard key={article.slug} article={article} variant="river" />
             ))}
-          </RevealGroup>
+          </div>
         </section>
       ) : null}
 

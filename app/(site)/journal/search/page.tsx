@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArticleCard from "@/components/journal/ArticleCard";
-import SectionLabel from "@/components/ui/SectionLabel";
 import { getNavCategories, categoryPath, searchArticles } from "@/lib/journal/content";
 import { buildMetadata } from "@/lib/seo";
 
@@ -24,9 +23,9 @@ export default async function JournalSearchPage({ searchParams }: SearchPageProp
 
   return (
     <>
-      <header className="container journal-listing-head">
-        <SectionLabel>TCF JOURNAL</SectionLabel>
-        <h1 className="journal-listing-title">Search</h1>
+      <header className="container jlisting-head">
+        <p className="jlisting-label">TCF Journal</p>
+        <h1 className="jlisting-title">Search</h1>
         {/* A plain GET form: works without JavaScript, and results are shareable URLs. */}
         <form action="/journal/search" method="get" role="search" className="journal-search-form">
           <label htmlFor="journal-q" className="sr-only">
@@ -39,9 +38,9 @@ export default async function JournalSearchPage({ searchParams }: SearchPageProp
         </form>
       </header>
 
-      <section className="container journal-section journal-section--listing" aria-live="polite">
+      <section className="container jsection jsection--listing" aria-live="polite">
         {query ? (
-          <p className="journal-listing-count">
+          <p className="jlisting-count">
             {results.length === 0
               ? `No articles match “${query}”.`
               : `${results.length} ${results.length === 1 ? "article" : "articles"} for “${query}”`}
@@ -49,14 +48,14 @@ export default async function JournalSearchPage({ searchParams }: SearchPageProp
         ) : null}
 
         {results.length ? (
-          <div className="journal-grid">
+          <div className="jriver">
             {results.map((article) => (
-              <ArticleCard key={article.slug} article={article} headingLevel={2} showExcerpt />
+              <ArticleCard key={article.slug} article={article} variant="river" headingLevel={2} />
             ))}
           </div>
         ) : (
           <div className="journal-search-browse">
-            <h2 className="journal-mini-title">Browse by topic</h2>
+            <h2 className="jrail-title">Browse by topic</h2>
             <ul className="tag-list">
               <li>
                 <Link href="/journal/latest">Latest</Link>

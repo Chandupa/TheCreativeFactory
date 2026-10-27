@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { RevealGroup, RevealText } from "@/components/motion/Reveal";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import SectionLabel from "@/components/ui/SectionLabel";
 import type { ArticleSummary, Page } from "@/lib/journal/content";
 import type { Crumb } from "@/lib/schema";
 import ArticleCard from "./ArticleCard";
@@ -16,32 +14,27 @@ interface ArticleListingProps {
   pageHref: (page: number) => string;
 }
 
-/** Paginated grid shared by /journal/latest and category pages. */
+/** Paginated archive shared by /journal/latest and category pages: big title, then a river of stories. */
 export default function ArticleListing({ label, title, description, breadcrumbs, page, pageHref }: ArticleListingProps) {
-  const first = page.items.slice(0, 6);
-  const rest = page.items.slice(6);
-
   return (
     <>
-      <header className="container journal-listing-head">
+      <header className="container jlisting-head">
         <Breadcrumbs items={breadcrumbs} />
-        <SectionLabel>{label}</SectionLabel>
-        <RevealText as="h1" display className="journal-listing-title">
-          {title}
-        </RevealText>
-        {description ? (
-          <p className="journal-listing-lede" data-reveal="copy">
-            {description}
-          </p>
-        ) : null}
-        {page.totalPages > 1 ? (
-          <p className="journal-listing-count">
-            Page {page.page} of {page.totalPages}
-          </p>
+        <p className="jlisting-label">{label}</p>
+        <h1 className="jlisting-title">{title}</h1>
+        {description || page.totalPages > 1 ? (
+          <div className="jlisting-intro">
+            {description ? <p className="jlisting-lede">{description}</p> : null}
+            {page.totalPages > 1 ? (
+              <p className="jlisting-count">
+                Page {page.page} of {page.totalPages}
+              </p>
+            ) : null}
+          </div>
         ) : null}
       </header>
 
-      <section className="container journal-section journal-section--listing" aria-label={title}>
+      <section className="container jsection jsection--listing" aria-label={title}>
         {page.items.length === 0 ? (
           <div className="journal-empty">
             <h2>Nothing here yet.</h2>
@@ -50,22 +43,11 @@ export default function ArticleListing({ label, title, description, breadcrumbs,
             </p>
           </div>
         ) : (
-          <>
-            <RevealGroup variant="card" className="journal-grid">
-              {first.map((article) => (
-                <ArticleCard key={article.slug} article={article} headingLevel={2} showExcerpt />
-              ))}
-            </RevealGroup>
-            {rest.length ? (
-              <>
-                <RevealGroup variant="card" className="journal-grid journal-grid--continued">
-                  {rest.map((article) => (
-                    <ArticleCard key={article.slug} article={article} headingLevel={2} showExcerpt />
-                  ))}
-                </RevealGroup>
-              </>
-            ) : null}
-          </>
+          <div className="jriver">
+            {page.items.map((article) => (
+              <ArticleCard key={article.slug} article={article} variant="river" headingLevel={2} />
+            ))}
+          </div>
         )}
         <Pagination page={page.page} totalPages={page.totalPages} href={pageHref} />
       </section>

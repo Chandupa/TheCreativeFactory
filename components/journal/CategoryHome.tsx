@@ -319,7 +319,7 @@ export default function CategoryHome({
             title="MORE STORIES"
             aside={
               articles.length > JOURNAL_PAGE_SIZE ? (
-                <Link href={categoryPath(category.slug, 2)} className="journal-section-link">
+                <Link href={categoryPath(category.slug, 2)} className="jsection-link">
                   Older stories →
                 </Link>
               ) : null
