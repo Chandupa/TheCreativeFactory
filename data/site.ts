@@ -89,8 +89,8 @@ export const stats: Stat[] = [
 ];
 
 export const heroMedia: HeroMedia = {
-  video: null,
-  poster: "/images/image.jpeg",
+  video: "/videos/hero.mp4",
+  poster: "/images/hero-poster.jpg",
 };
 
 /**
